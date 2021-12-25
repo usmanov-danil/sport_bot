@@ -17,11 +17,27 @@ menu = ReplyKeyboardMarkup(
 workout = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text=KEYBOARD['first_train']),
+            KeyboardButton(text=KEYBOARD['first_workout']),
         ],
-        [KeyboardButton(text=KEYBOARD['second_train'])],
+        [KeyboardButton(text=KEYBOARD['second_workout'])],
         [
-            KeyboardButton(text=KEYBOARD['third_train']),
+            KeyboardButton(text=KEYBOARD['third_workout']),
+        ],
+        [
+            KeyboardButton(text=KEYBOARD['back']),
+        ],
+    ],
+    resize_keyboard=True,
+)
+
+profile = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=KEYBOARD['first_workout']),
+        ],
+        [KeyboardButton(text=KEYBOARD['second_workout'])],
+        [
+            KeyboardButton(text=KEYBOARD['third_workout']),
         ],
         [
             KeyboardButton(text=KEYBOARD['back']),
