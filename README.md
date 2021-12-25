@@ -3,14 +3,15 @@
 TODO: write description
 
 # TODO
-[] get data from google docs
-[] add fms
-[] add posability to write messages from admin to all users except admins
-[] add posability to users get wheir weights
-[] add posability to users plot their weigth and BMI
-[] add posability to users add and change their peofile info (BMI, height and etc)
-[] add docker
-[] add envs
+
+- [ ] get data from google docs
+- [ ] add fms
+- [ ] add posability to write messages from admin to all users except admins
+- [ ] add posability to users get wheir weights
+- [ ] add posability to users plot their weigth and BMI
+- [ ] add posability to users add and change their peofile info (BMI, height and etc)
+- [ ] add docker
+- [ ] add envs
 
 
 ## After git clone
