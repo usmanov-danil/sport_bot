@@ -1,0 +1,16 @@
+# version: "3.8"
+# services:
+#   bot:
+#     environment:
+#       - ENV=dev
+#     build:
+#       args:
+#         ENV: dev
+#       context: .
+#       dockerfile: ./bot/Dockerfile
+#     container_name: bot
+#     volumes:
+#       - ./logs:/app/logs
+#     hostname: bot
+#     ports:
+#       - "8080:8080"
