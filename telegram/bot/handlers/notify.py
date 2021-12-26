@@ -1,5 +1,5 @@
 from aiogram import Dispatcher
-from bot.config import ADMINS
+from config import ADMINS
 from loguru import logger
 
 

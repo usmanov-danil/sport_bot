@@ -1,10 +1,9 @@
 from aiogram import types
 from aiogram.dispatcher.filters import Command
-from bot.config import ADMINS
 from bot.handlers.keyboard import menu
 from bot.loader import bot, dp
 from bot.texts import HELP_MESSAGE, WELCOME_MESSAGE
-from config_manger import sqlite_repo
+from config import ADMINS, sqlite_repo
 from services.user_managment import get_all_user_ids, register_new_user
 
 

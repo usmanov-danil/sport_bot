@@ -17,7 +17,7 @@ from bot.texts import (
     PROFILE_MAIN_TEXT,
     PROFILE_STEPS,
 )
-from config_manger import sqlite_repo
+from config import sqlite_repo
 from models.base import User
 from services.calculation import calculate_kbgu_levels
 from services.user_managment import (
