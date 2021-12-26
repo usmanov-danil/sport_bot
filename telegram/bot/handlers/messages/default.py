@@ -21,10 +21,9 @@ async def process_help_command(message: types.Message):
 
 @dp.message_handler(Command('all'))
 async def notify_users(message: types.Message):
-    text = message.get_args()
-    user_ids = await get_all_user_ids(sqlite_repo)
-    print(text)
-    print(user_ids)
-    for uid in user_ids:
-        if uid not in ADMINS:
-            await bot.send_message(uid, text)
+    if message.from_user.id in ADMINS:
+        text = message.get_args()
+        user_ids = await get_all_user_ids(sqlite_repo)
+        for uid in user_ids:
+            if not (uid in ADMINS):
+                await bot.send_message(uid, text)
