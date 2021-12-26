@@ -5,13 +5,13 @@ TODO: write description
 # TODO
 
 - [ ] get data from google docs
-- [ ] add fsm
-- [ ] add posability to write messages from admin to all users except admins - /message всем привет!
-- [ ] add posability to users get wheir weights - weights
+- [x] add posability to write messages from admin to all users except admins - /message всем привет!
+- [ ] add posability to users get their weights - weights
 - [ ] add posability to users plot their weigth and BMI - weights
-- [ ] add posability to users add and change their peofile info (BMI, height and etc) - profile
+- [ ] add posability to users add and change their profile info (BMI, height and etc) - profile
 - [ ] add docker
 - [ ] add envs
+- [ ] change button if workout completed
 
 
 ## After git clone

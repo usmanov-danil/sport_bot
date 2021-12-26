@@ -1,3 +1,5 @@
+import sys
+
 from logger.settings import LoguruHandler, logging_level_within
 
 # Configuration
@@ -6,6 +8,14 @@ log_format = '{level} {time} {name}: {message}'
 rotation = '1 week'
 
 HANDLERS: list[LoguruHandler] = [
+    LoguruHandler(
+        {
+            'sink': sys.stdout,
+            'format': log_format,
+            'level': 'INFO',
+            'serialize': False,
+        }
+    ),
     LoguruHandler(
         {
             'sink': 'logs/debug.log',
