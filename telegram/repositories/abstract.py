@@ -10,10 +10,6 @@ class UserRepository(ABC):
         raise NotImplemented
 
     @abstractmethod
-    def get_all_users(self) -> list[User]:
-        raise NotImplemented
-
-    @abstractmethod
     def get_all_user_ids(self) -> list[int]:
         raise NotImplemented
 

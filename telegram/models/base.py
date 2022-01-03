@@ -1,7 +1,9 @@
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 
 from aiogram.types.user import User as UserRaw
 from aiogram.types.user import base, fields
+from pydantic import BaseModel
+from pydantic.types import Json
 
 
 class User(UserRaw):
@@ -19,6 +21,18 @@ class User(UserRaw):
             weight=user_tuple[4],
             height=user_tuple[5],
             years=user_tuple[6],
+        )
+
+    @staticmethod
+    def from_json(user_json: Json):
+        return User(
+            id=user_json['id'],
+            first_name=user_json['first_name'],
+            last_name=user_json['last_name'],
+            username=user_json['username'],
+            weight=user_json['weight'],
+            height=user_json['height'],
+            years=user_json['years'],
         )
 
     def set_personal_params(self, weight: float, height: int, years: int) -> None:

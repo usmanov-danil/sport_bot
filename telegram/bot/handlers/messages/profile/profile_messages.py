@@ -7,7 +7,7 @@ from aiogram.dispatcher.storage import FSMContext
 from bot.handlers.fsm import ProfileKBGU, ProfileRegistration
 from bot.handlers.keyboard import activity_keyboard, profile, remove_keyboard, sex_keyboard
 from bot.handlers.messages.utils import is_valid_height, is_valid_weight, is_valid_years
-from bot.loader import dp
+from bot.loader import config_manager, dp
 from bot.texts import (
     ACTIVITY,
     ASK_TO_REGISTER,
@@ -17,7 +17,6 @@ from bot.texts import (
     PROFILE_MAIN_TEXT,
     PROFILE_STEPS,
 )
-from config import sqlite_repo
 from models.base import User
 from services.calculation import calculate_kbgu_levels
 from services.user_managment import (
@@ -36,13 +35,13 @@ async def process_start_command(message: types.Message):
 
 @dp.message_handler(Text(KEYBOARD['get_profile_info']))
 async def get_profile_info(message: types.Message):
-    answer = await get_user_data(sqlite_repo, message.from_user)
+    answer = await get_user_data(config_manager.repository, message.from_user)
     await message.answer(answer)
 
 
 @dp.message_handler(Text(KEYBOARD['change_profile']))
 async def change_profile(message: types.Message):
-    if is_user_exists(sqlite_repo, message.from_user):
+    if is_user_exists(config_manager.repository, message.from_user):
         await message.answer(PROFILE_STEPS['first'], reply_markup=remove_keyboard)
         await ProfileRegistration.waiting_for_weight.set()
     else:
@@ -86,15 +85,15 @@ async def year_setted(message: types.Message, state: FSMContext):
     user.set_personal_params(
         height=user_data['height'], weight=user_data['weight'], years=user_data['years']
     )
-    msg = await save_personal_data(sqlite_repo, user)
+    msg = await save_personal_data(config_manager.repository, user)
     await message.answer(msg, reply_markup=profile)
     await state.finish()
 
 
 @dp.message_handler(Text(KEYBOARD['calculate_kbgu']))
 async def calculate_kbgu(message: types.Message):
-    if is_user_exists(sqlite_repo, message.from_user) and is_personal_data_exists(
-        sqlite_repo, message.from_user
+    if is_user_exists(config_manager.repository, message.from_user) and is_personal_data_exists(
+        config_manager.repository, message.from_user
     ):
         await message.answer(PROFILE_KBGU_STEPS['first'], reply_markup=sex_keyboard)
         await ProfileKBGU.waiting_for_sex.set()
@@ -122,6 +121,8 @@ async def activity_setted(message: types.Message, state: FSMContext):
     await state.update_data(activity=ACTIVITY[message.text])
     data = await state.get_data()
 
-    msg = await calculate_kbgu_levels(sqlite_repo, data['sex'], data['activity'], message.from_user)
+    msg = await calculate_kbgu_levels(
+        config_manager.repository, data['sex'], data['activity'], message.from_user
+    )
     await message.answer(msg, reply_markup=profile)
     await state.finish()

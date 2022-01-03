@@ -1,13 +1,41 @@
-import sqlite3
-from importlib import import_module
+import os
+from pathlib import Path
+from typing import Optional
 
-from repositories.sqlite_repository import SqliteUserRepository
+from pydantic import BaseModel
+from pydantic.types import PyObject
+from pymongo.mongo_client import MongoClient
 
-path_to_db = 'bot.db'
-connection = sqlite3.connect(path_to_db)
-sqlite_repo: SqliteUserRepository = import_module(
-    'repositories.sqlite_repository'
-).SqliteUserRepository(connection)
+PROJECT_PATH = Path(os.path.abspath(os.path.dirname(__file__)))
+CONFIG_FILE_PATH = PROJECT_PATH / 'config.json'
 
-BOT_TOKEN = '5096639131:AAGQ7ZDWFWiNbJgkuquhgi4arANxfbwx2Vc'
-ADMINS = ['129931780']  # 932432352 - Misha
+
+class RepositoryConfig(BaseModel):
+    repo: PyObject
+    connection: str
+    port: Optional[int]
+    username: Optional[str]
+    password: Optional[str]
+
+
+class Config(BaseModel):
+    token: str
+    admins: list[str]
+    repo: RepositoryConfig
+
+
+class ConfigurationManager:
+    def __init__(self) -> None:
+        config_json = open(CONFIG_FILE_PATH).read()
+        self._config = Config.parse_raw(config_json)
+        self.environment = os.getenv('ENV', 'dev')
+        self.admins = self._config.admins
+        self.token = self._config.token
+
+        _connection = MongoClient(
+            self._config.repo.connection,
+            self._config.repo.port,
+            username=self._config.repo.username,
+            password=self._config.repo.password,
+        )
+        self.repository = self._config.repo.repo(_connection)

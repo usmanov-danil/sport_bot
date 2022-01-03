@@ -7,9 +7,6 @@ menu = ReplyKeyboardMarkup(
             KeyboardButton(text=KEYBOARD['workout']),
         ],
         [KeyboardButton(text=KEYBOARD['profile'])],
-        [
-            KeyboardButton(text=KEYBOARD['attendance']),
-        ],
     ],
     resize_keyboard=True,
 )

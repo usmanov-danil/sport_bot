@@ -4,12 +4,7 @@ TODO: write description
 
 # TODO
 
-- [ ] get data from google docs
-- [ ] add posability to users get their weights - weights
-- [ ] add posability to users plot their weigth and BMI - weights
-- [ ] add docker
-- [ ] add envs
-- [ ] change button if workout completed
+- [ ] fix /all comand
 После выбора тренировки  появляется клавиатура
 С выбором упражнения чтобы задать вес
 Кнопка отметить, что сделал
@@ -17,7 +12,6 @@ TODO: write description
 Кнопка назад
 
 сбросить профиль
-
 заходишь регаешься ждешьь ответ админа
 
 
