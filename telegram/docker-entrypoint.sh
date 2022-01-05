@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "Starting bot..." && cd telegram && python3 runpoint.py
+echo "Starting bot..." && python3 ./telegram/runpoint.py

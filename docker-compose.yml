@@ -1,16 +1,35 @@
-# version: "3.8"
-# services:
-#   bot:
-#     environment:
-#       - ENV=dev
-#     build:
-#       args:
-#         ENV: dev
-#       context: .
-#       dockerfile: ./bot/Dockerfile
-#     container_name: bot
-#     volumes:
-#       - ./logs:/app/logs
-#     hostname: bot
-#     ports:
-#       - "8080:8080"
+version: "3.8"
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 27017:27017
+    volumes:
+    - ./db:/data/db
+    networks:
+      - local
+
+  bot:
+    depends_on:
+      - mongo
+    environment:
+      - ENV=dev
+    build:
+      args:
+        CONFIG: config.json
+        ENV: dev
+      context: .
+      dockerfile: ./telegram/Dockerfile
+    container_name: bot
+    volumes:
+      - ./logs:/app/logs
+    hostname: bot
+    networks:
+      - local
+
+networks:
+  local:

@@ -4,8 +4,10 @@
 
 # Custom
 **/*.log/**
+**/logs/**
 .vscode
 *.db
+db
 
 ### macOS ###
 # General

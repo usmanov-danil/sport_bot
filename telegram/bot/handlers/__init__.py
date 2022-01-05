@@ -1,1 +1,1 @@
-from . import commands, keyboard, messages, posts, schedules
+from . import commands, keyboard, messages

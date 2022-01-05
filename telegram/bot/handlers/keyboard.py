@@ -1,15 +1,12 @@
-from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
-from bot.texts import KEYBOARD
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from bot.texts import ACTIVITY, KEYBOARD
 
 menu = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text=KEYBOARD['workout']),
         ],
-        [KeyboardButton(text=KEYBOARD['weights']), KeyboardButton(text=KEYBOARD['profile'])],
-        [
-            KeyboardButton(text=KEYBOARD['attendance']),
-        ],
+        [KeyboardButton(text=KEYBOARD['profile'])],
     ],
     resize_keyboard=True,
 )
@@ -33,11 +30,11 @@ workout = ReplyKeyboardMarkup(
 profile = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text=KEYBOARD['first_workout']),
+            KeyboardButton(text=KEYBOARD['get_profile_info']),
         ],
-        [KeyboardButton(text=KEYBOARD['second_workout'])],
+        [KeyboardButton(text=KEYBOARD['change_profile'])],
         [
-            KeyboardButton(text=KEYBOARD['third_workout']),
+            KeyboardButton(text=KEYBOARD['calculate_kbgu']),
         ],
         [
             KeyboardButton(text=KEYBOARD['back']),
@@ -45,3 +42,23 @@ profile = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True,
 )
+
+sex_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=KEYBOARD['male']),
+        ],
+        [
+            KeyboardButton(text=KEYBOARD['female']),
+        ],
+    ],
+    resize_keyboard=True,
+)
+
+activity_keyboard = ReplyKeyboardMarkup(
+    keyboard=[[item] for item in ACTIVITY.keys()],
+    resize_keyboard=True,
+)
+
+
+remove_keyboard = ReplyKeyboardRemove()
