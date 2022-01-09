@@ -7,12 +7,11 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: bot_db
     ports:
       - 27017:27017
     volumes:
     - ./db:/data/db
-    networks:
-      - local
 
   bot:
     depends_on:
@@ -29,8 +28,6 @@ services:
     volumes:
       - ./logs:/app/logs
     hostname: bot
-    networks:
-      - local
 
   admin:
     depends_on:
@@ -45,14 +42,9 @@ services:
       args:
           ENV: dev
       context: ./admin
+    volumes:
+      - ./admin/bot/:/app/bot/
     container_name: admin
     ports:
       - 8000:8000
     restart: always
-
-    networks:
-      - local
-
-
-networks:
-  local:

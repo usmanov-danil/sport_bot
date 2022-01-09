@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bot',
 ]
 
 MIDDLEWARE = [
@@ -78,13 +79,13 @@ WSGI_APPLICATION = 'admin.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': getenv('MONGO_DB'),
+        'NAME': getenv('MONGO_DB', 'bot_db'),
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': getenv('MONGO_HOST'),
-            'port': int(getenv('MONGO_PORT')),
-            'username': getenv('MONGO_USERNAME'),
-            'password': getenv('MONGO_PASSWORD'),
+            'host': getenv('MONGO_HOST', 'mongo'),
+            'port': int(getenv('MONGO_PORT', '27017')),
+            'username': getenv('MONGO_USERNAME', 'root'),
+            'password': getenv('MONGO_PASSWORD', 'root'),
         },
     }
 }
