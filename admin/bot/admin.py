@@ -1,14 +1,10 @@
 from django.contrib import admin
 
-from .models import Exercise
+from .models import Exercise, Group, Gymnastic, Set, Training, User
 
-
-class ExerciseAdmin(admin.ModelAdmin):
-    list_display = ['name']
-    list_display_links = [
-        'name',
-    ]
-    search_fields = ['name']
-
-
-admin.site.register(Exercise, ExerciseAdmin)
+admin.site.register(User)
+admin.site.register(Training)
+admin.site.register(Group)
+admin.site.register(Set)
+admin.site.register(Exercise)
+admin.site.register(Gymnastic)
