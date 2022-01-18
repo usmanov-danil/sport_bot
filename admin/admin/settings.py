@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure--dzi9-a%7_b72+300z^51ml(rvbgiysscj!z-5-8*3+!(z!n@d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'admin.urls'
 
