@@ -5,7 +5,7 @@ from djongo import models
 
 class Group(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100, unique=True, verbose_name='Название')
+    name = models.CharField(max_length=100, unique=True, verbose_name='Название группы')
     description = models.TextField(blank=True, verbose_name='Описание')
 
     def user_names(self) -> str:
@@ -67,7 +67,7 @@ class Gymnastic(models.Model):
     value = models.CharField(max_length=50, blank=False, verbose_name='Повторения')
 
     def __str__(self):
-        return f'{self.exercise.name}: {self.value}'
+        return f'{self.exercise.name}: {self.value} повторов'
 
     class Meta:
         verbose_name = 'Задание'

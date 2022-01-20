@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import DateFieldListFilter, ModelAdmin
 from django.utils import timezone
+from rangefilter.filters import DateRangeFilter
 
 from .models import Exercise, Group, Gymnastic, Set, Training, User
 
@@ -17,6 +18,7 @@ class GroupAdmin(ModelAdmin):
 
 class ExerciseAdmin(ModelAdmin):
     list_display = ('name', 'description', 'link')
+    search_fields = ('name',)
 
 
 class SetAdmin(ModelAdmin):
@@ -24,7 +26,7 @@ class SetAdmin(ModelAdmin):
 
 
 class UserAdmin(ModelAdmin):
-    list_display = ('__str__', 'group_names', 'sex')
+    list_display = ('__str__', 'group_names', 'sex', 'activated')
     list_filter = (
         # ('week_start_date', DateFieldListFilter),
         'groups__name',
@@ -34,7 +36,7 @@ class UserAdmin(ModelAdmin):
 class TrainingAdmin(admin.ModelAdmin):
     list_display = ('week_start_date', '__str__', 'group_names')
     list_filter = (
-        ('week_start_date', DateFieldListFilter),
+        ('week_start_date', DateRangeFilter),
         'groups__name',
     )
 
@@ -43,6 +45,9 @@ class TrainingAdmin(admin.ModelAdmin):
             date_created=timezone.datetime.today()
         )
         return super(TrainingAdmin, self).render_change_form(request, context, args, kwargs)
+
+    def get_rangefilter_week_start_date_title(self, request, field_path):
+        return 'По дате начала недели'
 
 
 admin_site = AdminSite()
