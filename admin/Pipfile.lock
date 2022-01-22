@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7024373cbac3e08167988e18d950fc3a2f9dcf38ab67ced7b99fb8f363b5d3ac"
+            "sha256": "e51086d42c5662d0ff2cf56ede7ef970439034f5bfbaa59e9b144aa93729a3c6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -32,12 +32,28 @@
             "index": "pypi",
             "version": "==4.0.1"
         },
+        "django-admin-rangefilter": {
+            "hashes": [
+                "sha256:133be5bde1fe5154e4f5e2bd5a3c20b0c946042ed6b8498300b5bd0ef837af4f",
+                "sha256:51b4ef53f04e1dcb442689d7042d869972a4cc422c898b107862e48560d240c3"
+            ],
+            "index": "pypi",
+            "version": "==0.8.3"
+        },
         "djongo": {
             "hashes": [
                 "sha256:2250d484d4b4025661c139162bafd359eabaffd0deeba18debc59df78a325dc7"
             ],
             "index": "pypi",
             "version": "==1.3.6"
+        },
+        "dnspython": {
+            "hashes": [
+                "sha256:36c5e8e38d4369a08b6780b7f27d790a292b2b08eea01607865bf0936c558e01",
+                "sha256:f69c21288a962f4da86e56c4905b49d11aba7938d3d740e80d9e366ee4f1632d"
+            ],
+            "index": "pypi",
+            "version": "==1.16.0"
         },
         "pymongo": {
             "hashes": [
@@ -165,6 +181,7 @@
                 "sha256:ce028444cfab83be538752a2ffdb56bc417b7784ff35bb9a3062413717807dec",
                 "sha256:d9cf190f51cbb26da0412247dfe4fb5f4098edb73db84e02f9fc21fdca31fed4"
             ],
+            "index": "pypi",
             "version": "==0.2.4"
         }
     },
@@ -327,11 +344,11 @@
         },
         "pytest-order": {
             "hashes": [
-                "sha256:5997a262b31234eebb461f9a9ef24687bf732029b499845a4398b69edb5ac321",
-                "sha256:a4cdf12f4c83c76bdfd6e6088e2e157df7fdf91a9c3e3ca7d8809e8dabce0f4b"
+                "sha256:5dd6b929fbd7eaa6d0ee07586f65c623babb0afe72b4843c5f15055d6b3b1b1f",
+                "sha256:bbe6e63a8e23741ab3e810d458d1ea7317e797b70f9550512d77d6e9e8fd1bbb"
             ],
             "index": "pypi",
-            "version": "==1.0.0"
+            "version": "==1.0.1"
         },
         "python-dotenv": {
             "hashes": [

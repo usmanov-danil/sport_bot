@@ -20,7 +20,9 @@ else \
     pipenv install --deploy --clear --system --ignore-pipfile; \
 fi
 
+
 COPY . .
 RUN chmod +x /app/docker-entrypoint.sh
 ENV ENV=$ENV
+RUN export DJANGO_SETTINGS_MODULE=admin.settings
 ENTRYPOINT ["/app/docker-entrypoint.sh"]

@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure--dzi9-a%7_b72+300z^51ml(rvbgiysscj!z-5-8*3+!(z!n@d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bot',
+    'rangefilter',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'admin.urls'
 
@@ -78,13 +82,13 @@ WSGI_APPLICATION = 'admin.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': getenv('MONGO_DB'),
+        'NAME': getenv('MONGO_DB', 'bot_db'),
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': getenv('MONGO_HOST'),
-            'port': int(getenv('MONGO_PORT')),
-            'username': getenv('MONGO_USERNAME'),
-            'password': getenv('MONGO_PASSWORD'),
+            'host': getenv('MONGO_HOST', 'mongo'),
+            'port': int(getenv('MONGO_PORT', '27017')),
+            'username': getenv('MONGO_USERNAME', 'root'),
+            'password': getenv('MONGO_PASSWORD', 'root'),
         },
     }
 }
@@ -112,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
