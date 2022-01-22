@@ -1,6 +1,6 @@
 {
     "token": "5096639131:AAGQ7ZDWFWiNbJgkuquhgi4arANxfbwx2Vc",
-    "admins": ["129931780"],
+    "admins": [129931780],
     "repo": {
         "repo": "repositories.mongo_repository.MongoUserRepository",
         "connection": "mongo",

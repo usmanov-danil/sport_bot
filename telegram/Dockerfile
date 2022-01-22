@@ -24,4 +24,4 @@ COPY ./telegram ./telegram
 COPY ./configs/$CONFIG ./telegram/config.json
 
 ENV ENV=$ENV
-ENTRYPOINT ["/app/telegram/docker-entrypoint.sh"]
+ENTRYPOINT ["python", "/app/telegram/runpoint.py"]

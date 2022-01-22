@@ -1,8 +1,6 @@
 # INFO MESSAGES
 WELCOME_MESSAGE = 'Привет\\!\nНапиши мне что\\-нибудь\\!'
 HELP_MESSAGE = 'тут будет всякая инфа'
-
-WORKOUT_MAIN_TEXT = 'Выбери тренировку'
 MAIN_PAGE_TEXT = 'Выбери пункт'
 
 # OK STATUS
@@ -12,6 +10,8 @@ DATA_IS_SAVED = 'Данные успешно сохранены'
 UNKNOW = '_Неизвестно_'
 ASK_TO_REGISTER = 'Ваши данные не найдены, просьба пройти регистарцию с помощью команды /start'
 INCORRECT_INPUT = 'Пожалуйста, введите корректный ответ'
+WAIT_ADMIN_APPROVE = 'Ожидайте активацию от тренера'
+WAIT_ADMIN_GROUP = 'Ожидайте, пока тренер добавит вас в группу'
 
 # ADMIN
 STARTUP_NOTIFICATION = 'Бот запущен'
@@ -30,12 +30,16 @@ KEYBOARD = {
     'first_workout': 'Первая тренировка',
     'second_workout': 'Вторая тренировка',
     'third_workout': 'Третья тренировка',
+    'date_workout': 'По дате',
     # Profile
     'get_profile_info': 'Личные данные',
     'change_profile': 'Изменить личные данные',
     'calculate_kbgu': 'Посчитать суточную норму калорий',
     'male': 'Мужской',
     'female': 'Женский',
+    # Navigation
+    'prev': '⬅️',
+    'next': '➡️',
 }
 
 # Profile
@@ -60,3 +64,11 @@ ACTIVITY = {
     '1,9 – очень высокая активность (обычно речь идет о спортсменах в период соревновательной активности)': 1.9,
 }
 KBGU_TEXT = 'Ваша суточная норма каллорий:\nДля поддержания: {normal}\nДля похудения: {deficit}\nДля набора: {surplus}'
+
+
+# WORKOUT
+WORKOUT_MAIN_TEXT = 'Выбери тренировку'
+WORKOUT_GROUPS = 'Выберите группу'
+
+
+CHOOSE_DATE = 'Выберите дату: '

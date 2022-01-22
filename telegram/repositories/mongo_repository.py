@@ -1,5 +1,7 @@
+import uuid
 from typing import Optional
 
+from bson.binary import Binary
 from loguru import logger
 from models.base import User
 from pymongo.mongo_client import MongoClient
@@ -20,25 +22,33 @@ class MongoUserRepository(UserRepository):
 
     def save_user_data(self, user: User) -> None:
         try:
-            self.users.insert_one(
-                {
-                    'id': user.id,
-                    'first_name': user.first_name,
-                    'last_name': user.last_name,
-                    'username': user.username,
-                    'birth_date': None,
-                    'activated': False,
-                    'sex': None,
-                    'groups': None,
-                }
-            )
+            if not self.users.find({'telegram_id': user.id}):
+                self.users.insert_one(
+                    {
+                        'telegram_id': user.id,
+                    },
+                    {
+                        '$set': {
+                            'id': Binary(uuid.uuid4().bytes, 3),
+                            'telegram_id': user.id,
+                            'first_name': user.first_name,
+                            'last_name': user.last_name,
+                            'username': user.username,
+                            'birth_date': None,
+                            'activated': False,
+                            'sex': None,
+                            'groups_id': [],
+                        }
+                    },
+                )
+                logger.info(f'User {user.username} has registered')
         except Exception as err:
             logger.error(err)
 
     def get_all_user_ids(self) -> list[int]:
         try:
             if data_in_db := self.users.find():
-                return [item.id for item in data_in_db]
+                return [item.telegram_id for item in data_in_db]
             return []
         except Exception as err:
             logger.error(err)
@@ -46,8 +56,25 @@ class MongoUserRepository(UserRepository):
 
     def get_user_data_by_id(self, id: int) -> Optional[User]:
         try:
-            if data_in_db := self.users.find_one({'id': id}):
-                return User.from_json(data_in_db)
+            data_in_db = self.users.aggregate(
+                [
+                    {'$match': {'telegram_id': 129931780}},
+                    {
+                        '$lookup': {
+                            'from': 'bot_group',
+                            'let': {'ids': '$groups_id'},
+                            'pipeline': [
+                                {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
+                                {'$project': {'name': 1, '_id': 0}},
+                            ],
+                            'as': 'groups',
+                        }
+                    },
+                    {'$project': {"groups_id": 0}},
+                ]
+            )
+            if data_in_db:
+                return User.from_json(list(data_in_db)[0])
             return None
         except Exception as err:
             logger.error(err)
@@ -57,7 +84,7 @@ class MongoUserRepository(UserRepository):
             if self.get_user_data_by_id(user.id):
                 self.users.find_one_and_update(
                     {
-                        'id': user.id,
+                        'telegram_id': user.id,
                     },
                     {
                         '$set': {

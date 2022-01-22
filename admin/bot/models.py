@@ -23,10 +23,10 @@ class Group(models.Model):
 class User(models.Model):
     _SEX = (('M', 'Мужской'), ('F', 'Женский'))
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    telegram_id = models.CharField(max_length=32)
+    telegram_id = models.PositiveIntegerField()
     first_name = models.CharField(max_length=32, verbose_name='Имя')
     last_name = models.CharField(max_length=32, verbose_name='Фамилия')
-    birth_date = models.DateField(blank=True, verbose_name='Дата рождения')
+    birth_date = models.DateField(blank=True, verbose_name='Дата рождения', null=True)
     activated = models.BooleanField(default=False, verbose_name='Активированный')
     sex = models.CharField(max_length=1, choices=_SEX, verbose_name='Пол', blank=True, null=True)
     groups = models.ArrayReferenceField(
@@ -35,7 +35,7 @@ class User(models.Model):
 
     def group_names(self) -> str:
         names = list(User.objects.filter(id=self.id).values_list('groups__name', flat=True))
-        return ", ".join(names)
+        return ', '.join(names) if names and names[0] else ''
 
     def __str__(self):
         # return f'{str(self.first_name)} {str(self.last_name)}. Группы: {self.group_names()}'
@@ -113,7 +113,7 @@ class Training(models.Model):
 
     def group_names(self) -> str:
         names = list(Training.objects.filter(id=self.id).values_list('groups__name', flat=True))
-        return ", ".join(names)
+        return ', '.join(names) if names and names[0] else ''
 
     def __str__(self):
         # return f'Неделя {self.week_start_date}. Тренировка № {self.order}. Группы: {self.group_names()}'

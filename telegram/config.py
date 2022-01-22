@@ -20,7 +20,7 @@ class RepositoryConfig(BaseModel):
 
 class Config(BaseModel):
     token: str
-    admins: list[str]
+    admins: list[int]
     repo: RepositoryConfig
 
 

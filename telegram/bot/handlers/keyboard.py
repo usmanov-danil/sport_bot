@@ -6,7 +6,9 @@ menu = ReplyKeyboardMarkup(
         [
             KeyboardButton(text=KEYBOARD['workout']),
         ],
-        [KeyboardButton(text=KEYBOARD['profile'])],
+        # [
+        #     KeyboardButton(text=KEYBOARD['profile'])
+        # ],
     ],
     resize_keyboard=True,
 )
@@ -15,10 +17,11 @@ workout = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text=KEYBOARD['first_workout']),
-        ],
-        [KeyboardButton(text=KEYBOARD['second_workout'])],
-        [
+            KeyboardButton(text=KEYBOARD['second_workout']),
             KeyboardButton(text=KEYBOARD['third_workout']),
+        ],
+        [
+            KeyboardButton(text=KEYBOARD['date_workout']),
         ],
         [
             KeyboardButton(text=KEYBOARD['back']),
@@ -26,6 +29,7 @@ workout = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True,
 )
+
 
 profile = ReplyKeyboardMarkup(
     keyboard=[
@@ -62,3 +66,7 @@ activity_keyboard = ReplyKeyboardMarkup(
 
 
 remove_keyboard = ReplyKeyboardRemove()
+
+
+def get_workout_group_keyboard(groups: list[str]) -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup(keyboard=[[item] for item in groups])
