@@ -117,7 +117,7 @@ class Migration(migrations.Migration):
                 ),
                 ('telegram_id', models.CharField(max_length=32)),
                 ('first_name', models.CharField(max_length=32, verbose_name='Имя')),
-                ('second_name', models.CharField(max_length=32, verbose_name='Фамилия')),
+                ('last_name', models.CharField(max_length=32, verbose_name='Фамилия')),
                 ('birth_date', models.DateField(blank=True, verbose_name='Дата рождения')),
                 ('activated', models.BooleanField(default=False, verbose_name='Активированный')),
                 (

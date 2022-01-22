@@ -25,7 +25,7 @@ class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     telegram_id = models.CharField(max_length=32)
     first_name = models.CharField(max_length=32, verbose_name='Имя')
-    second_name = models.CharField(max_length=32, verbose_name='Фамилия')
+    last_name = models.CharField(max_length=32, verbose_name='Фамилия')
     birth_date = models.DateField(blank=True, verbose_name='Дата рождения')
     activated = models.BooleanField(default=False, verbose_name='Активированный')
     sex = models.CharField(max_length=1, choices=_SEX, verbose_name='Пол', blank=True, null=True)
@@ -38,8 +38,8 @@ class User(models.Model):
         return ", ".join(names)
 
     def __str__(self):
-        # return f'{str(self.first_name)} {str(self.second_name)}. Группы: {self.group_names()}'
-        return f'{str(self.first_name)} {str(self.second_name)}'
+        # return f'{str(self.first_name)} {str(self.last_name)}. Группы: {self.group_names()}'
+        return f'{str(self.first_name)} {str(self.last_name)}'
 
     class Meta:
         verbose_name = 'Пользователь'

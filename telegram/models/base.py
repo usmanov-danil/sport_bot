@@ -1,3 +1,4 @@
+import typing
 from typing import Any, Optional, Tuple
 
 from aiogram.types.user import User as UserRaw
@@ -7,20 +8,22 @@ from pydantic.types import Json
 
 
 class User(UserRaw):
-    weight: Optional[base.Float] = fields.Field(default=None)
-    height: Optional[base.Integer] = fields.Field(default=None)
-    years: Optional[base.Integer] = fields.Field(default=None)
+    activated: Optional[base.Boolean] = fields.Field(default=False)
+    birth_date: Optional[base.String] = fields.Field(default=None)
+    sex: Optional[base.String] = fields.DateTimeField(default=None)
+    groups: Optional[typing.List[base.String]] = fields.ListField(base=base.String, default=None)
 
     @staticmethod
-    def from_tuple(user_tuple: Tuple[int, str, str, str, int, float, int]):
+    def from_tuple(user_tuple: Tuple[int, str, str, str, str, bool, str, list]):
         return User(
             id=user_tuple[0],
             first_name=user_tuple[1],
             last_name=user_tuple[2],
             username=user_tuple[3],
-            weight=user_tuple[4],
-            height=user_tuple[5],
-            years=user_tuple[6],
+            birth_date=user_tuple[4],
+            activated=user_tuple[5],
+            sex=user_tuple[6],
+            groups=user_tuple[7],
         )
 
     @staticmethod
@@ -30,15 +33,17 @@ class User(UserRaw):
             first_name=user_json['first_name'],
             last_name=user_json['last_name'],
             username=user_json['username'],
-            weight=user_json['weight'],
-            height=user_json['height'],
-            years=user_json['years'],
+            birth_date=user_json['birth_date'],
+            activated=user_json['activated'],
+            sex=user_json['sex'],
+            groups=user_json['groups'],
         )
 
-    def set_personal_params(self, weight: float, height: int, years: int) -> None:
-        self.weight = weight
-        self.height = height
-        self.years = years
+    def set_personal_params(self, birth_data: str, activated: bool, sex: str, groups: list) -> None:
+        self.birth_date = birth_data
+        self.activated = activated
+        self.sex = sex
+        self.groups = groups
 
     @classmethod
     def from_aiogram_user(cls, ai_user: UserRaw):
@@ -51,4 +56,4 @@ class User(UserRaw):
         return user_obj
 
     def has_personal_data(self) -> bool:
-        return self.weight and self.height and self.years
+        return self.birth_date and self.sex and self.groups
