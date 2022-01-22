@@ -26,8 +26,8 @@ class MongoUserRepository(UserRepository):
                     'first_name': user.first_name,
                     'last_name': user.last_name,
                     'username': user.username,
-                    'birth_date': False,
-                    'activated': None,
+                    'birth_date': None,
+                    'activated': False,
                     'sex': None,
                     'groups': None,
                 }
