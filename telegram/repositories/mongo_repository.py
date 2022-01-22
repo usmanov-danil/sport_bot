@@ -14,7 +14,7 @@ class MongoUserRepository(UserRepository):
     def _init_db(self) -> None:
         try:
             self.db = self._conn['bot_db']
-            self.users = self.db['users']
+            self.users = self.db['bot_user']
         except Exception as err:
             logger.error(err)
 
@@ -26,9 +26,10 @@ class MongoUserRepository(UserRepository):
                     'first_name': user.first_name,
                     'last_name': user.last_name,
                     'username': user.username,
-                    'weight': None,
-                    'height': None,
-                    'years': None,
+                    'birth_date': None,
+                    'activated': False,
+                    'sex': None,
+                    'groups': None,
                 }
             )
         except Exception as err:
@@ -60,9 +61,10 @@ class MongoUserRepository(UserRepository):
                     },
                     {
                         '$set': {
-                            'height': user.height,
-                            'weight': user.weight,
-                            'years': user.years,
+                            'birth_date': user.birth_date,
+                            'activated': user.activated,
+                            'sex': user.sex,
+                            'groups': user.groups,
                         }
                     },
                 )

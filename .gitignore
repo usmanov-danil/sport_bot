@@ -8,6 +8,7 @@
 .vscode
 *.db
 db
+.idea/
 
 ### macOS ###
 # General

@@ -10,6 +10,7 @@ ENV LANG C.UTF-8
 ARG ENV
 ARG CONFIG
 
+RUN python3 -m pip install --upgrade pip
 RUN pip3 install pipenv
 
 COPY ./Pipfile .

@@ -34,8 +34,13 @@ async def save_personal_data(repo: UserRepository, user: UserRaw) -> str:
 
 async def get_user_data(repo: UserRepository, user: User) -> str:
     if data := repo.get_user_data_by_id(user.id):
-        weight = data.weight if data.weight else UNKNOW
-        height = data.height if data.height else UNKNOW
-        year = data.years if data.years else UNKNOW
-        return escape(USER_DATA_TEMPLATE.format(weight=weight, height=height, year=year))
+        birth_date = data.birth_date if data.birth_date else UNKNOW
+        activated = data.activated if data.activated else UNKNOW
+        sex = data.sex if data.sex else UNKNOW
+        groups = data.groups if data.groups else UNKNOW
+        return escape(
+            USER_DATA_TEMPLATE.format(
+                birth_date=birth_date, activated=activated, sex=sex, groups=groups
+            )
+        )
     return ASK_TO_REGISTER

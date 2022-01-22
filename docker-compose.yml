@@ -13,22 +13,6 @@ services:
     volumes:
     - ./db:/data/db
 
-  bot:
-    depends_on:
-      - mongo
-    environment:
-      - ENV=dev
-    build:
-      args:
-        CONFIG: config.json
-        ENV: dev
-      context: .
-      dockerfile: ./telegram/Dockerfile
-    container_name: bot
-    volumes:
-      - ./logs:/app/logs
-    hostname: bot
-
   admin:
     depends_on:
         - mongo
@@ -48,3 +32,20 @@ services:
     ports:
       - 8000:8000
     restart: always
+
+  bot:
+    depends_on:
+      - admin
+      - mongo
+    environment:
+      - ENV=dev
+    build:
+      args:
+        CONFIG: config.json
+        ENV: dev
+      context: .
+      dockerfile: ./telegram/Dockerfile
+    container_name: bot
+    volumes:
+      - ./logs:/app/logs
+    hostname: bot
