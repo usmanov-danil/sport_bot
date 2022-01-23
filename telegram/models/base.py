@@ -1,10 +1,8 @@
 import typing
-from datetime import date
-from typing import Any, Optional, Tuple
+from typing import Optional, Tuple
 
 from aiogram.types.user import User as UserRaw
 from aiogram.types.user import base, fields
-from pydantic import BaseModel
 from pydantic.types import Json
 
 

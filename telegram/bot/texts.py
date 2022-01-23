@@ -69,6 +69,6 @@ KBGU_TEXT = 'Ваша суточная норма каллорий:\nДля по
 # WORKOUT
 WORKOUT_MAIN_TEXT = 'Выбери тренировку'
 WORKOUT_GROUPS = 'Выберите группу'
-
+WORKOUT_DONT_EXIST = 'Этой тренировки не существует'
 
 CHOOSE_DATE = 'Выберите дату: '

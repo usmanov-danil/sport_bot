@@ -131,5 +131,13 @@ class DialogCalendar:
         if data['act'] == "SET-DAY":
             await query.message.delete_reply_markup()  # removing inline keyboard
             await query.message.delete()
-            return_data = True, datetime(int(data['year']), int(data['month']), int(data['day']))
+            return_data = True, datetime(
+                year=int(data['year']),
+                month=int(data['month']),
+                day=int(data['day']),
+                hour=0,
+                minute=0,
+                second=0,
+                microsecond=0,
+            )
         return return_data
