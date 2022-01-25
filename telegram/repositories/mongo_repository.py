@@ -28,23 +28,18 @@ class MongoUserRepository(UserRepository):
             if not self.users.find({'telegram_id': user.id}):
                 self.users.insert_one(
                     {
+                        'id': Binary(uuid.uuid4().bytes, 3),
                         'telegram_id': user.id,
-                    },
-                    {
-                        '$set': {
-                            'id': Binary(uuid.uuid4().bytes, 3),
-                            'telegram_id': user.id,
-                            'first_name': user.first_name,
-                            'last_name': user.last_name,
-                            'username': user.username,
-                            'birth_date': None,
-                            'activated': False,
-                            'sex': None,
-                            'groups_id': [],
-                        }
-                    },
+                        'first_name': user.first_name,
+                        'last_name': user.last_name,
+                        'username': user.username,
+                        'birth_date': None,
+                        'activated': False,
+                        'sex': None,
+                        'groups': [],
+                    }
                 )
-                logger.info(f'User {user.username} has registered')
+            logger.info(f'User {user.username} has registered')
         except Exception as err:
             logger.error(err)
 
@@ -61,7 +56,7 @@ class MongoUserRepository(UserRepository):
         try:
             data_in_db = self.users.aggregate(
                 [
-                    {'$match': {'telegram_id': 129931780}},
+                    {'$match': {'telegram_id': id}},
                     {
                         '$lookup': {
                             'from': 'bot_group',
