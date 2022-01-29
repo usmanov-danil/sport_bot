@@ -2,6 +2,9 @@
 
 TODO: write description
 
+Исправить календарь
+Исправить текста
+
 
 ## After git clone
 After you cloned this repo, install pre-commit checks globally.

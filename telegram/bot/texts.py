@@ -72,3 +72,4 @@ WORKOUT_GROUPS = 'Выберите группу'
 WORKOUT_DONT_EXIST = 'Этой тренировки не существует'
 
 CHOOSE_DATE = 'Выберите дату: '
+ROUNDS_LIST = ['раунд', 'раунда', 'раундов']

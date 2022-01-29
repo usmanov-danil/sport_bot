@@ -24,10 +24,10 @@ class DialogCalendar:
         self.month = month
 
     async def start_calendar(self, year: int = datetime.now().year) -> InlineKeyboardMarkup:
-        inline_kb = InlineKeyboardMarkup(row_width=5)
+        inline_kb = InlineKeyboardMarkup(row_width=3)
         # first row - years
         inline_kb.row()
-        for value in range(year - 2, year + 3):
+        for value in range(year - 1, year + 2):
             inline_kb.insert(
                 InlineKeyboardButton(
                     value, callback_data=calendar_callback.new("SET-YEAR", value, -1, -1)

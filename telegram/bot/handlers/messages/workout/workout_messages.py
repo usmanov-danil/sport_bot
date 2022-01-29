@@ -7,7 +7,8 @@ from aiogram.types import CallbackQuery
 from bot.handlers.calendar import DialogCalendar, calendar_callback
 from bot.handlers.fsm import Workout
 from bot.handlers.keyboard import get_workout_group_keyboard, menu, workout
-from bot.loader import bot, config_manager, dp
+from bot.handlers.messages.utils import get_order_from_date, get_workout_order
+from bot.loader import config_manager, dp
 from bot.texts import (
     ASK_TO_REGISTER,
     CHOOSE_DATE,
@@ -52,42 +53,17 @@ async def waiting_for_group(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(Text(KEYBOARD['first_workout']), state=Workout.waiting_for_workout)
+@dp.message_handler(Text(KEYBOARD['second_workout']), state=Workout.waiting_for_workout)
+@dp.message_handler(Text(KEYBOARD['third_workout']), state=Workout.waiting_for_workout)
 async def process_first_workout(message: types.Message, state: FSMContext):
     if is_user_exists(config_manager.repository, message.from_user):
         user_groups = await state.get_data()
         group = user_groups.get('user_group')
-        if workout := await get_workout(config_manager.repository, group, 1):
-            print(workout)
+        order = get_workout_order(message.text)
+        if workout := await get_workout(config_manager.repository, group, order):
+            await message.reply(workout.render_message())
         else:
-            await message.answer(WORKOUT_DONT_EXIST)
-    else:
-        await message.answer(ASK_TO_REGISTER)
-        return
-
-
-@dp.message_handler(Text(KEYBOARD['second_workout']), state=Workout.waiting_for_workout)
-async def process_second_workout(message: types.Message, state: FSMContext):
-    if is_user_exists(config_manager.repository, message.from_user):
-        user_groups = await state.get_data()
-        group = user_groups.get('user_group')
-        if workout := await get_workout(config_manager.repository, group, 2):
-            print(workout)
-        else:
-            await message.answer(WORKOUT_DONT_EXIST)
-    else:
-        await message.answer(ASK_TO_REGISTER)
-        return
-
-
-@dp.message_handler(Text(KEYBOARD['third_workout']), state=Workout.waiting_for_workout)
-async def process_third_workout(message: types.Message, state: FSMContext):
-    if is_user_exists(config_manager.repository, message.from_user):
-        user_groups = await state.get_data()
-        group = user_groups.get('user_group')
-        if workout := await get_workout(config_manager.repository, group, 3):
-            print(workout)
-        else:
-            await message.answer(WORKOUT_DONT_EXIST)
+            await message.reply(WORKOUT_DONT_EXIST)
     else:
         await message.answer(ASK_TO_REGISTER)
         return
@@ -97,6 +73,7 @@ async def process_third_workout(message: types.Message, state: FSMContext):
 @dp.message_handler(Text(KEYBOARD['date_workout']), state=Workout.waiting_for_workout)
 async def process_date_workout(message: types.Message, state: FSMContext):
     if is_user_exists(config_manager.repository, message.from_user):
+        await state.update_data(msg_id=message.message_id)
         await message.answer(CHOOSE_DATE, reply_markup=await DialogCalendar().start_calendar())
     else:
         await message.answer(ASK_TO_REGISTER)
@@ -109,23 +86,13 @@ async def process_dialog_calendar(
 ):
     selected, date = await DialogCalendar().process_selection(callback_query, callback_data)
     if selected:
-        if is_user_exists(config_manager.repository, callback_query.message.from_user):
-            user_groups = await state.get_data()
-            group = user_groups.get('user_group')
-            if date.weekday() in {0, 1}:
-                order = 1
-            elif date.weekday() in {2, 3}:
-                order = 2
-            elif date.weekday() in {4, 5, 6}:
-                order = 3
-            print(group, order, date)
-            if workout := await get_workout(config_manager.repository, group, order, date=date):
-                print(workout)
-            else:
-                await callback_query.message.answer(WORKOUT_DONT_EXIST)
+        user_groups = await state.get_data()
+        group = user_groups.get('user_group')
+        msg_id = user_groups.get('msg_id')
+        callback_query.message.message_id = msg_id
+        order = get_order_from_date(date)
+
+        if workout := await get_workout(config_manager.repository, group, order, date=date):
+            await callback_query.message.reply(workout.render_message())
         else:
-            await callback_query.message.answer(ASK_TO_REGISTER)
-            return
-        # await callback_query.message.answer(
-        #     f'You selected {date.strftime("%d/%m/%Y")}', reply_markup=workout
-        # )
+            await callback_query.message.reply(WORKOUT_DONT_EXIST)

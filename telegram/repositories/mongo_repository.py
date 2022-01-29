@@ -173,7 +173,7 @@ class MongoUserRepository(UserRepository):
                 ]
             )
             if data_in_db:
-                return Workout.parse_obj((list(data_in_db)[0]))
+                return Workout.parse_obj(list(data_in_db)[0])
             return None
         except Exception as err:
             logger.error(err)
