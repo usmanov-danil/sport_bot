@@ -3,7 +3,7 @@ from typing import Text
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
-from bot.handlers.keyboard import menu
+from bot.handlers.keyboards.keyboard import menu
 from bot.loader import dp
 from bot.texts import KEYBOARD, MAIN_PAGE_TEXT
 

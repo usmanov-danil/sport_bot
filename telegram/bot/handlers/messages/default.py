@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
-from bot.handlers.keyboard import menu
+from bot.handlers.keyboards.keyboard import menu
 from bot.loader import bot, config_manager, dp
 from bot.texts import HELP_MESSAGE, MAIN_PAGE_TEXT, WELCOME_MESSAGE
 from services.user_managment import get_all_user_ids, register_new_user

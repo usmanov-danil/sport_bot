@@ -4,9 +4,10 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.storage import FSMContext
 from aiogram.types import CallbackQuery
-from bot.handlers.calendar import DialogCalendar, calendar_callback
 from bot.handlers.fsm import Workout
-from bot.handlers.keyboard import get_workout_group_keyboard, menu, workout
+from bot.handlers.keyboards.calendar import DialogCalendar, calendar_callback
+from bot.handlers.keyboards.inline import WorkoutInline, workout_callback
+from bot.handlers.keyboards.keyboard import get_workout_group_keyboard, menu, workout
 from bot.handlers.messages.utils import get_order_from_date, get_workout_order
 from bot.loader import config_manager, dp
 from bot.texts import (
@@ -55,18 +56,27 @@ async def waiting_for_group(message: types.Message, state: FSMContext):
 @dp.message_handler(Text(KEYBOARD['first_workout']), state=Workout.waiting_for_workout)
 @dp.message_handler(Text(KEYBOARD['second_workout']), state=Workout.waiting_for_workout)
 @dp.message_handler(Text(KEYBOARD['third_workout']), state=Workout.waiting_for_workout)
-async def process_first_workout(message: types.Message, state: FSMContext):
+async def process_workout(message: types.Message, state: FSMContext):
     if is_user_exists(config_manager.repository, message.from_user):
         user_groups = await state.get_data()
         group = user_groups.get('user_group')
         order = get_workout_order(message.text)
         if workout := await get_workout(config_manager.repository, group, order):
-            await message.reply(workout.render_message())
+            await message.reply(
+                workout.render_message(), reply_markup=await WorkoutInline(workout).start_calendar()
+            )
         else:
             await message.reply(WORKOUT_DONT_EXIST)
     else:
         await message.answer(ASK_TO_REGISTER)
         return
+
+
+@dp.callback_query_handler(workout_callback.filter(), state=Workout.waiting_for_workout)
+async def process_workout_inline(
+    callback_query: CallbackQuery, callback_data: dict, state: FSMContext, *args, **kwargs
+):
+    await WorkoutInline.process_selection(callback_query, callback_data)
 
 
 # Workout by day

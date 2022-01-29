@@ -68,3 +68,11 @@ class Workout(BaseModel):
             msg += f'{set.render_message(i + 1)}\n'
 
         return msg
+
+    def get_gymnastics(self) -> list[Exercise]:
+        gymnastics = []
+        for set in self.sets:
+            for gym in set.gymnastics:
+                gymnastics.append(gym)
+
+        return gymnastics

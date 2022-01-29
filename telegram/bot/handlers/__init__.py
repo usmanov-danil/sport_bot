@@ -1,1 +1,2 @@
-from . import commands, keyboard, messages
+from . import commands, messages
+from .keyboards import keyboard
