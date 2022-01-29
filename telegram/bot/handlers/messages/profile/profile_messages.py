@@ -29,7 +29,7 @@ from services.user_managment import (
 
 # Profile page
 @dp.message_handler(Text(equals=KEYBOARD['profile']))
-async def process_start_command(message: types.Message):
+async def process_profile(message: types.Message):
     await message.reply(PROFILE_MAIN_TEXT, reply_markup=profile)
 
 

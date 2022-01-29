@@ -23,7 +23,7 @@ from services.user_managment import get_user_groups, get_workout, is_user_exists
 
 # Workout page
 @dp.message_handler(Text(KEYBOARD['workout']))
-async def process_start_command(message: types.Message):
+async def process_workout(message: types.Message):
     # TODO: make more beautiful
     if is_user_exists(config_manager.repository, message.from_user):
         if user_grops := await get_user_groups(config_manager.repository, message.from_user):

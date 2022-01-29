@@ -39,7 +39,7 @@ class MongoUserRepository(UserRepository):
                         'groups': [],
                     }
                 )
-            logger.info(f'User {user.username} has registered')
+                logger.info(f'User {user.username} has registered')
         except Exception as err:
             logger.error(err)
 
