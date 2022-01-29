@@ -25,7 +25,8 @@ services:
     build:
       args:
           ENV: dev
-      context: ./admin
+      context: .
+      dockerfile: ./admin/Dockerfile
     volumes:
       - ./admin/bot/:/app/bot/
     container_name: admin

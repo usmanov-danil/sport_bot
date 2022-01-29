@@ -13,8 +13,8 @@ ARG CONFIG
 RUN python3 -m pip install --upgrade pip
 RUN pip3 install pipenv
 
-COPY ./Pipfile .
-COPY ./Pipfile.lock .
+COPY ./admin/Pipfile .
+COPY ./admin/Pipfile.lock .
 RUN if [ "$ENV" = "dev" ]; then \
     pipenv install --dev --deploy --clear --system --ignore-pipfile; \
 else \
@@ -22,7 +22,7 @@ else \
 fi
 
 
-COPY . .
+COPY ./admin .
 RUN chmod +x /app/docker-entrypoint.sh
 ENV ENV=$ENV
 RUN export DJANGO_SETTINGS_MODULE=admin.settings

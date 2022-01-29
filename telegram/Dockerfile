@@ -12,16 +12,16 @@ ARG CONFIG
 
 RUN pip3 install pipenv
 
-COPY ./Pipfile .
-COPY ./Pipfile.lock .
+COPY ./telegram/Pipfile .
+COPY ./telegram/Pipfile.lock .
 RUN if [ "$ENV" = "dev" ]; then \
     pipenv install --dev --deploy --clear --system --ignore-pipfile; \
 else \
     pipenv install --deploy --clear --system --ignore-pipfile; \
 fi
 
-COPY ./telegram ./telegram
-COPY ./configs/$CONFIG ./telegram/config.json
+COPY ./telegram .
+COPY ./configs/$CONFIG ./config.json
 
 ENV ENV=$ENV
-ENTRYPOINT ["python", "/app/telegram/runpoint.py"]
+ENTRYPOINT ["python", "/app/runpoint.py"]
