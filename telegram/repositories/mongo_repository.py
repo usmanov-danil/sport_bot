@@ -108,7 +108,8 @@ class MongoUserRepository(UserRepository):
                 [
                     {
                         '$match': {
-                            'week_start_date': (date - datetime.timedelta(days=date.weekday())),
+                            # 'week_start_date': (date - datetime.timedelta(days=date.weekday())),
+                            'week_start_date': date,
                             'order': order,
                         }
                     },

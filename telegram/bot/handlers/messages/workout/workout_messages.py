@@ -3,7 +3,7 @@ from typing import Text
 from aiogram import Dispatcher, types
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.storage import FSMContext
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, ParseMode
 from bot.handlers.fsm import Workout
 from bot.handlers.keyboards.calendar import DialogCalendar, calendar_callback
 from bot.handlers.keyboards.inline import WorkoutInline, workout_callback
@@ -100,9 +100,12 @@ async def process_dialog_calendar(
         group = user_groups.get('user_group')
         msg_id = user_groups.get('msg_id')
         callback_query.message.message_id = msg_id
-        order = get_order_from_date(date)
+        # order = get_order_from_date(date) TODO redo it ASAP
+        order = 1
 
         if workout := await get_workout(config_manager.repository, group, order, date=date):
-            await callback_query.message.reply(workout.render_message())
+            await callback_query.message.reply(
+                workout.render_message(), disable_web_page_preview=True
+            )
         else:
             await callback_query.message.reply(WORKOUT_DONT_EXIST)

@@ -64,10 +64,10 @@ class Gymnastic(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, verbose_name='Упражнение')
     description = models.TextField(blank=True, verbose_name='Описание')
-    value = models.CharField(max_length=50, blank=False, verbose_name='Повторения')
+    value = models.CharField(max_length=50, blank=True, verbose_name='Повторения')
 
     def __str__(self):
-        return f'{self.exercise.name}: {self.value} повторов'
+        return f'{self.exercise.name}: {self.value}'
 
     class Meta:
         verbose_name = 'Задание'
