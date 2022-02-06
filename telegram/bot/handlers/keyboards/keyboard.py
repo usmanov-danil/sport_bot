@@ -13,23 +13,23 @@ menu = ReplyKeyboardMarkup(
     resize_keyboard=True,
 )
 
-workout = ReplyKeyboardMarkup(
-    keyboard=[
-        [
-            KeyboardButton(text=KEYBOARD['first_workout']),
-            KeyboardButton(text=KEYBOARD['second_workout']),
-            KeyboardButton(text=KEYBOARD['third_workout']),
-        ],
-        [
-            KeyboardButton(text=KEYBOARD['date_workout']),
-        ],
-        [
-            KeyboardButton(text=KEYBOARD['back']),
-        ],
-    ],
-    resize_keyboard=True,
-)
-
+# TODO redo
+# workout = ReplyKeyboardMarkup(
+#     keyboard=[
+#         [
+#             KeyboardButton(text=KEYBOARD['1_workout']),
+#             KeyboardButton(text=KEYBOARD['2_workout']),
+#             KeyboardButton(text=KEYBOARD['3_workout']),
+#         ],
+#         [
+#             KeyboardButton(text=KEYBOARD['date_workout']),
+#         ],
+#         [
+#             KeyboardButton(text=KEYBOARD['back']),
+#         ],
+#     ],
+#     resize_keyboard=True,
+# )
 
 profile = ReplyKeyboardMarkup(
     keyboard=[
@@ -64,9 +64,19 @@ activity_keyboard = ReplyKeyboardMarkup(
     resize_keyboard=True,
 )
 
-
 remove_keyboard = ReplyKeyboardRemove()
 
 
 def get_workout_group_keyboard(groups: list[str]) -> ReplyKeyboardMarkup:
-    return ReplyKeyboardMarkup(keyboard=[[item] for item in groups])
+    return ReplyKeyboardMarkup(keyboard=[[item] for item in groups], resize_keyboard=True)
+
+
+def get_workout_trainings_keyboard(trainings_number: int) -> ReplyKeyboardMarkup:
+    trainings = [[str(KEYBOARD[f'{training + 1}_workout'])] for training in range(trainings_number)]
+    trainings.append([str(KEYBOARD['date_workout'])])
+    trainings.append([str(KEYBOARD['back'])])
+    workout = ReplyKeyboardMarkup(
+        keyboard=trainings,
+        resize_keyboard=True,
+    )
+    return workout

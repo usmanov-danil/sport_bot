@@ -2,7 +2,6 @@
 Was taken from https://github.com/noXplode/aiogram_calendar
 """
 
-
 import calendar
 from datetime import datetime
 
@@ -16,7 +15,7 @@ ignore_callback = calendar_callback.new('IGNORE', -1, -1, -1)  # for buttons wit
 
 
 class DialogCalendar:
-    months = ['Янв', 'Феб', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сеп', 'Окт', 'Нов', 'Дек']
+    months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
 
     def __init__(self, year: int = datetime.now().year, month: int = datetime.now().month):
         self.year = year
@@ -103,6 +102,7 @@ class DialogCalendar:
                     inline_kb.insert(InlineKeyboardButton(' ', callback_data=ignore_callback))
                     continue
                 inline_kb.insert(
+                    # TODO change stile of buttons on weeks without trainings
                     InlineKeyboardButton(
                         str(day), callback_data=calendar_callback.new('SET-DAY', year, month, day)
                     )

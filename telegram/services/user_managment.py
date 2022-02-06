@@ -55,8 +55,17 @@ async def get_user_groups(repo: UserRepository, user: UserRaw) -> Optional[list[
 async def get_workout(
     repo: UserRepository, group: str, order: int, date: datetime.datetime = None
 ) -> Optional[Workout]:
-    today = datetime.datetime.today().replace(
-        hour=0, minute=0, second=0, microsecond=0, tzinfo=datetime.timezone.utc
-    )
+    return repo.get_workout(group, order, get_start_week(date))
+
+
+async def get_workout_count(repo: UserRepository, group: str, date: datetime.datetime) -> int:
+    res = repo.get_workout_count(group, get_start_week(date))
+    return res
+
+
+def get_start_week(date: datetime.datetime):
+    today = datetime.datetime.today()
     date = date if date else today
-    return repo.get_workout(group, order, date)
+    date = date.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=datetime.timezone.utc)
+    start_week_date = date - datetime.timedelta(days=date.weekday())
+    return start_week_date

@@ -27,9 +27,16 @@ KEYBOARD = {
     'attendance': 'Student attendance',
     'back': 'Назад',
     # Workout
-    'first_workout': 'Первая тренировка',
-    'second_workout': 'Вторая тренировка',
-    'third_workout': 'Третья тренировка',
+    '1_workout': '1 тренировка',
+    '2_workout': '2 тренировка',
+    '3_workout': '3 тренировка',
+    '4_workout': '4 тренировка',
+    '5_workout': '5 тренировка',
+    '6_workout': '6 тренировка',
+    '7_workout': '7 тренировка',
+    '8_workout': '8 тренировка',
+    '9_workout': '9 тренировка',
+    '10_workout': '10 тренировка',
     'date_workout': 'По дате',
     # Profile
     'get_profile_info': 'Личные данные',
@@ -69,7 +76,7 @@ KBGU_TEXT = 'Ваша суточная норма каллорий:\nДля по
 # WORKOUT
 WORKOUT_MAIN_TEXT = 'Выбери тренировку'
 WORKOUT_GROUPS = 'Выберите группу'
-WORKOUT_DONT_EXIST = 'Этой тренировки не существует'
+WORKOUT_DONT_EXIST = 'На этой неделе нет тренировок'
 
 CHOOSE_DATE = 'Выберите дату: '
 ROUNDS_LIST = ['раунд', 'раунда', 'раундов']

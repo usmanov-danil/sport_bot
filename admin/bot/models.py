@@ -23,7 +23,7 @@ class Group(models.Model):
 class User(models.Model):
     _SEX = (('M', 'Мужской'), ('F', 'Женский'))
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    telegram_id = models.PositiveIntegerField()
+    telegram_id = models.PositiveIntegerField(editable=False)
     first_name = models.CharField(max_length=32, verbose_name='Имя')
     last_name = models.CharField(max_length=32, verbose_name='Фамилия')
     birth_date = models.DateField(blank=True, verbose_name='Дата рождения', null=True)
@@ -78,7 +78,7 @@ class Set(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     description = models.TextField(blank=True, verbose_name='Описание')
     rounds_amount = models.PositiveIntegerField(default=3, verbose_name='Кол-во раундов')
-    date_created = models.DateField(auto_now_add=True, editable=True, verbose_name='Дата создания')
+    date_created = models.DateField(auto_now_add=True, editable=False, verbose_name='Дата создания')
     gymnastics = models.ArrayReferenceField(
         to=Gymnastic, on_delete=models.CASCADE, verbose_name='Задания'
     )

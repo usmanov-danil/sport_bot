@@ -30,3 +30,7 @@ class UserRepository(ABC):
     @abstractmethod
     def get_workout(self, group: str, order: int, date: datetime.datetime) -> Optional[Workout]:
         raise NotImplemented
+
+    @abstractmethod
+    def get_workout_count(self, group: str, date: datetime.datetime) -> int:
+        raise NotImplemented

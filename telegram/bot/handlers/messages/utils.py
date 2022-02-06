@@ -16,16 +16,4 @@ def is_valid_years(years: str):
 
 
 def get_workout_order(message: str) -> int:
-    if message == KEYBOARD['first_workout']:
-        return 1
-    if message == KEYBOARD['second_workout']:
-        return 2
-    return 3
-
-
-def get_order_from_date(date: datetime) -> int:
-    if date.weekday() in {0, 1}:
-        return 1
-    elif date.weekday() in {2, 3}:
-        return 2
-    return 3
+    return int(message.split(' ')[0])

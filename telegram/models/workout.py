@@ -36,15 +36,15 @@ class Exercise(BaseModel):
 
 
 class Gymnastic(BaseModel):
-    excercise: Exercise
+    exercise: Exercise
     description: Optional[str] = fields.Field(default=None)
     value: str
 
     def render_message(self):
-        if self.excercise.link:
-            msg = f' \-*[{to_esc(self.excercise.name)}]({self.excercise.link})*: *{to_esc(self.value)}* '
+        if self.exercise.link:
+            msg = f' \-*[{to_esc(self.exercise.name)}]({self.exercise.link})*: *{to_esc(self.value)}* '
         else:
-            msg = f' \-*{to_esc(self.excercise.name)}*: *{to_esc(self.value)}* '
+            msg = f' \-*{to_esc(self.exercise.name)}*: *{to_esc(self.value)}* '
 
         if self.description:
             msg += f'({to_esc(self.description)})'
@@ -90,7 +90,7 @@ class Workout(BaseModel):
 
         return msg
 
-    def get_gymnastics(self) -> list[Exercise]:
+    def get_gymnastics(self) -> list[Gymnastic]:
         gymnastics = []
         for set in self.sets:
             for gym in set.gymnastics:
