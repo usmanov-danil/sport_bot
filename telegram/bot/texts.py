@@ -74,9 +74,12 @@ KBGU_TEXT = 'Ваша суточная норма каллорий:\nДля по
 
 
 # WORKOUT
-WORKOUT_MAIN_TEXT = 'Выбери тренировку'
+WORKOUT_MAIN_TEXT = 'Выберите тренировку'
 WORKOUT_GROUPS = 'Выберите группу'
-WORKOUT_DONT_EXIST = 'На этой неделе нет тренировок'
+WORKOUT_DONT_EXIST = 'Не существует тренировки'
+WORKOUT_WEEK_DONT_EXIST = 'Нет тренеровок на неделе'
+THIS_WEEK = 'эта неделя'
+LAST_WEEK = 'прошлая неделя'
 
 CHOOSE_DATE = 'Выберите дату: '
 ROUNDS_LIST = ['раунд', 'раунда', 'раундов']

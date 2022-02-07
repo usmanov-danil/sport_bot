@@ -3,12 +3,12 @@ from re import escape
 from typing import Optional
 
 from aiogram.types.user import User as UserRaw
+from bot.handlers.messages.utils import get_start_week
 from bot.texts import ASK_TO_REGISTER, DATA_IS_SAVED, UNKNOW, USER_DATA_TEMPLATE
 from loguru import logger
 from models.base import User
 from models.workout import Workout
 from repositories.abstract import UserRepository
-from services.calculation import get_start_week
 
 
 async def register_new_user(repo: UserRepository, user: User) -> None:

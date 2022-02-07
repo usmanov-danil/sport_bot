@@ -12,20 +12,27 @@ from bot.handlers.keyboards.keyboard import (
     get_workout_trainings_keyboard,
     menu,
 )
-from bot.handlers.messages.utils import get_workout_order
+from bot.handlers.messages.utils import (
+    get_naive_date,
+    get_start_week,
+    get_week_from_date,
+    get_workout_order,
+)
 from bot.loader import config_manager, dp
 from bot.texts import (
     ASK_TO_REGISTER,
     CHOOSE_DATE,
     INCORRECT_INPUT,
     KEYBOARD,
+    LAST_WEEK,
+    THIS_WEEK,
     WAIT_ADMIN_GROUP,
     WORKOUT_DONT_EXIST,
     WORKOUT_GROUPS,
     WORKOUT_MAIN_TEXT,
+    WORKOUT_WEEK_DONT_EXIST,
 )
 from repositories.abstract import UserRepository
-from services.calculation import get_start_week
 from services.user_managment import get_user_groups, get_workout, get_workout_count, is_user_exists
 
 
@@ -65,10 +72,11 @@ async def waiting_for_group(message: types.Message, state: FSMContext):
     training_count = await get_workout_count(config_manager.repository, group, date)
     if training_count < 1:
         await Workout.waiting_for_workout.set()
-        await message.reply(text=WORKOUT_DONT_EXIST, reply_markup=get_workout_trainings_keyboard(0))
-        await message.delete()
+        await message.reply(
+            text=f"{WORKOUT_WEEK_DONT_EXIST} {get_week_from_date(date)}",
+            reply_markup=get_workout_trainings_keyboard(0),
+        )
         return
-    print(group, training_count)
     await message.answer(
         f"{WORKOUT_MAIN_TEXT} {get_week_from_date(date)}: ",
         reply_markup=get_workout_trainings_keyboard(training_count),
@@ -97,7 +105,9 @@ async def process_workout(message: types.Message, state: FSMContext):
                 workout.render_message(), disable_web_page_preview=True
             )  # , reply_markup=await WorkoutInline(workout).start()
         else:
-            await message.reply(WORKOUT_DONT_EXIST)
+            await message.reply(
+                f"{WORKOUT_DONT_EXIST}: {group} №{order} {get_week_from_date(date)}"
+            )
     else:
         await message.answer(ASK_TO_REGISTER)
         return
@@ -133,10 +143,3 @@ async def process_dialog_calendar(
         callback_query.message.message_id = msg_id
         await Workout.waiting_for_group.set()
         await waiting_for_group(callback_query.message, state)
-
-
-def get_week_from_date(date: datetime.datetime) -> str:
-    start_week = get_start_week(date)
-    end_week = start_week + datetime.timedelta(days=6)
-    week_dates = start_week.strftime("%d/%m") + " \- " + end_week.strftime("%d/%m")
-    return week_dates

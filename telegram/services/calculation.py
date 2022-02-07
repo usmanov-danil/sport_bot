@@ -31,11 +31,3 @@ async def calculate_kbgu_levels(
     surplus = int(normal + normal * 0.18)
 
     return KBGU_TEXT.format(normal=normal, deficit=deficit, surplus=surplus)
-
-
-def get_start_week(date: datetime.datetime):
-    today = datetime.datetime.today()
-    date = date if date else today
-    date = date.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=datetime.timezone.utc)
-    start_week_date = date - datetime.timedelta(days=date.weekday())
-    return start_week_date

@@ -1,6 +1,7 @@
-from datetime import date
+from datetime import date, datetime
 
 from async_timeout import Optional
+from bot.handlers.messages.utils import get_week_from_date
 from bot.texts import ROUNDS_LIST
 from models.utils import get_decl
 from pydantic import BaseModel, fields
@@ -62,7 +63,7 @@ class Set(BaseModel):
 
     def render_message(self, number) -> str:
         msg = (
-            f'*Set {number}*/*{self.rounds_amount}* {get_decl(self.rounds_amount, ROUNDS_LIST)} '
+            f'*Set {number}*: *{self.rounds_amount}* {get_decl(self.rounds_amount, ROUNDS_LIST)} '
             f'{to_esc(self.description)}\n'
         )
         for gym in self.gymnastics:
@@ -81,7 +82,10 @@ class Workout(BaseModel):
     sets: list[Set]
 
     def render_message(self) -> str:  # TODO: generalize text
-        msg = f'Тренировка № {self.order}\n'
+        msg = (
+            f'Тренировка № {self.order} '
+            f'{get_week_from_date(datetime.combine(self.week_start_date.today(), datetime.min.time()))}\n'
+        )
         msg += f'Группа: *{to_esc(self.group.name)}*\n'
         if self.description:
             msg += f'Описание: {to_esc(self.description)}\n'
