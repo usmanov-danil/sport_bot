@@ -13,17 +13,20 @@ class WorkoutInline:
     def __init__(self, workout: Workout):
         self.workout = workout
 
-    async def start_calendar(self) -> InlineKeyboardMarkup:
+    async def start(self) -> InlineKeyboardMarkup:
         inline_kb = InlineKeyboardMarkup(row_width=1)
+        exists = set()
         for item in self.workout.get_gymnastics():
-            inline_kb.add(
-                InlineKeyboardButton(
-                    f'{item.excercise.name} – {item.value}',
-                    callback_data=workout_callback.new(
-                        item.excercise.name, item.excercise.description, item.excercise.link
-                    ),
+            if not (title := f'{item.exercise.name} – {item.value}') in exists:
+                exists.add(title)
+                inline_kb.add(
+                    InlineKeyboardButton(
+                        title,
+                        callback_data=workout_callback.new(
+                            item.exercise.name, item.exercise.description, item.exercise.link
+                        ),
+                    )
                 )
-            )
 
         return inline_kb
 

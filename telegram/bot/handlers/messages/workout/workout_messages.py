@@ -25,6 +25,7 @@ from bot.texts import (
     WORKOUT_MAIN_TEXT,
 )
 from repositories.abstract import UserRepository
+from services.calculation import get_start_week
 from services.user_managment import get_user_groups, get_workout, get_workout_count, is_user_exists
 
 
@@ -61,7 +62,7 @@ async def waiting_for_group(message: types.Message, state: FSMContext):
         await message.answer(INCORRECT_INPUT)
         return
     date = user_groups.get('date', datetime.datetime.today())
-    training_count = int(await get_workout_count(config_manager.repository, group, date))
+    training_count = await get_workout_count(config_manager.repository, group, date)
     if training_count < 1:
         await Workout.waiting_for_workout.set()
         await message.reply(text=WORKOUT_DONT_EXIST, reply_markup=get_workout_trainings_keyboard(0))
@@ -92,7 +93,9 @@ async def process_workout(message: types.Message, state: FSMContext):
         date = user_groups.get('date', datetime.datetime.today())
         order = get_workout_order(message.text)
         if workout := await get_workout(config_manager.repository, group, order, date=date):
-            await message.reply(workout.render_message(), disable_web_page_preview=True)
+            await message.reply(
+                workout.render_message(), disable_web_page_preview=True
+            )  # , reply_markup=await WorkoutInline(workout).start()
         else:
             await message.reply(WORKOUT_DONT_EXIST)
     else:
@@ -133,7 +136,7 @@ async def process_dialog_calendar(
 
 
 def get_week_from_date(date: datetime.datetime) -> str:
-    start_week = date - datetime.timedelta(days=datetime.datetime.weekday(date))
+    start_week = get_start_week(date)
     end_week = start_week + datetime.timedelta(days=6)
     week_dates = start_week.strftime("%d/%m") + " \- " + end_week.strftime("%d/%m")
     return week_dates

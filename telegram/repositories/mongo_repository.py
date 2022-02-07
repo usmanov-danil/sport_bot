@@ -260,77 +260,18 @@ class MongoUserRepository(UserRepository):
 
     def get_workout_count(self, group: str, date: datetime.datetime) -> Optional[int]:
         try:
-            data_in_db = self.workout.aggregate(
+            if data_in_db := self.workout.aggregate(
                 [
                     {
                         '$match': {
-                            'week_start_date': (date - datetime.timedelta(days=date.weekday())),
-                        }
-                    },
-                    {
-                        '$lookup': {
-                            'from': 'bot_group',
-                            'let': {'ids': '$groups_id'},
-                            'pipeline': [
-                                {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
-                                {'$match': {'name': group}},
-                                {'$count': 'id'},
-                            ],
-                            'as': 'group',
-                        }
-                    },
-                    {'$addFields': {'group': {'$arrayElemAt': ['$group', 0]}}},
-                    {
-                        '$lookup': {
-                            'from': 'bot_set',
-                            'let': {'ids': '$sets_id'},
-                            'pipeline': [
-                                {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
-                                {
-                                    '$lookup': {
-                                        'from': 'bot_gymnastic',
-                                        'let': {'gids': '$gymnastics_id'},
-                                        'pipeline': [
-                                            {'$match': {'$expr': {'$in': ['$id', '$$gids']}}},
-                                            {'$project': {'id': 0, '_id': 0, 'date_created': 0}},
-                                            {
-                                                '$lookup': {
-                                                    'from': 'bot_exercise',
-                                                    'localField': 'exercise_id',
-                                                    'foreignField': 'id',
-                                                    'pipeline': [{'$project': {'id': 0, '_id': 0}}],
-                                                    'as': 'exercise',
-                                                }
-                                            },
-                                            {'$project': {'id': 0, '_id': 0, 'exercise_id': 0}},
-                                            {
-                                                '$addFields': {
-                                                    'exercise': {'$arrayElemAt': ['$exercise', 0]}
-                                                }
-                                            },
-                                        ],
-                                        'as': 'gymnastics',
-                                    }
-                                },
-                                {
-                                    '$project': {
-                                        'id': 0,
-                                        '_id': 0,
-                                        'date_created': 0,
-                                        'gymnastics_id': 0,
-                                    }
-                                },
-                            ],
-                            'as': 'sets',
+                            'week_start_date': date,
                         }
                     },
                     {'$count': 'id'},
                 ]
-            )
-            if data_in_db:
+            ):
                 count_dict = list(data_in_db)[0]
-                count = count_dict.get('id')
-                return count
+                return count_dict.get('id')
             return 0
         except Exception as err:
             logger.error(err)

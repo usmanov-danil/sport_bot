@@ -8,6 +8,7 @@ from loguru import logger
 from models.base import User
 from models.workout import Workout
 from repositories.abstract import UserRepository
+from services.calculation import get_start_week
 
 
 async def register_new_user(repo: UserRepository, user: User) -> None:
@@ -59,13 +60,4 @@ async def get_workout(
 
 
 async def get_workout_count(repo: UserRepository, group: str, date: datetime.datetime) -> int:
-    res = repo.get_workout_count(group, get_start_week(date))
-    return res
-
-
-def get_start_week(date: datetime.datetime):
-    today = datetime.datetime.today()
-    date = date if date else today
-    date = date.replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=datetime.timezone.utc)
-    start_week_date = date - datetime.timedelta(days=date.weekday())
-    return start_week_date
+    return repo.get_workout_count(group, get_start_week(date))

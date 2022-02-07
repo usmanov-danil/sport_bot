@@ -42,12 +42,14 @@ class Gymnastic(BaseModel):
 
     def render_message(self):
         if self.exercise.link:
-            msg = f' \-*[{to_esc(self.exercise.name)}]({self.exercise.link})*: *{to_esc(self.value)}* '
+            msg = (
+                f' –*[{to_esc(self.exercise.name)}]({self.exercise.link})*: *{to_esc(self.value)}* '
+            )
         else:
-            msg = f' \-*{to_esc(self.exercise.name)}*: *{to_esc(self.value)}* '
+            msg = f' –*{to_esc(self.exercise.name)}*: *{to_esc(self.value)}* '
 
         if self.description:
-            msg += f'({to_esc(self.description)})'
+            msg += f'\({to_esc(self.description)}\)'
 
         msg += '\n'
         return msg
@@ -60,7 +62,7 @@ class Set(BaseModel):
 
     def render_message(self, number) -> str:
         msg = (
-            f'*Set {number}*/ *{self.rounds_amount}* {get_decl(self.rounds_amount, ROUNDS_LIST)} '
+            f'*Set {number}*/*{self.rounds_amount}* {get_decl(self.rounds_amount, ROUNDS_LIST)} '
             f'{to_esc(self.description)}\n'
         )
         for gym in self.gymnastics:
@@ -83,7 +85,7 @@ class Workout(BaseModel):
         msg += f'Группа: *{to_esc(self.group.name)}*\n'
         if self.description:
             msg += f'Описание: {to_esc(self.description)}\n'
-        msg += f'Рабочий процент веса: *{self.min_rm_percent}\-{self.max_rm_percent}%*\n\n'
+        msg += f'Рабочий процент веса: *{self.min_rm_percent}–{self.max_rm_percent}%*\n\n'
 
         for i, set in enumerate(self.sets):
             msg += f'{set.render_message(i + 1)}\n'
