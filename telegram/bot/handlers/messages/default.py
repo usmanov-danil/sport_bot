@@ -7,11 +7,11 @@ from bot.texts import HELP_MESSAGE, MAIN_PAGE_TEXT, WELCOME_MESSAGE
 from services.user_managment import get_all_user_ids, register_new_user
 
 
-@dp.message_handler(Command('start'), state='*')
+@dp.message_handler(Command('start'))
 async def process_start_command(message: types.Message, state: FSMContext):
     await register_new_user(config_manager.repository, message.from_user)
     await message.reply(WELCOME_MESSAGE, reply_markup=menu)
-    await state.finish()
+    # await state.finish()
 
 
 @dp.message_handler(Command('menu'), state='*')

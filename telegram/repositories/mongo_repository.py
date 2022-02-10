@@ -25,7 +25,7 @@ class MongoUserRepository(UserRepository):
 
     def save_user_data(self, user: User) -> None:
         try:
-            if not self.users.find({'telegram_id': user.id}):
+            if not list(self.users.find({'telegram_id': user.id})):
                 self.users.insert_one(
                     {
                         'id': Binary(uuid.uuid4().bytes, 3),
@@ -39,13 +39,12 @@ class MongoUserRepository(UserRepository):
                         'groups': [],
                     }
                 )
-                logger.info(f'User {user.username} has registered')
         except Exception as err:
-            logger.error(err)
+            logger.error('PIZDA')
 
     def get_all_user_ids(self) -> list[int]:
         try:
-            if data_in_db := self.users.find():
+            if data_in_db := list(self.users.find()):
                 return [item.telegram_id for item in data_in_db]
             return []
         except Exception as err:
@@ -54,25 +53,27 @@ class MongoUserRepository(UserRepository):
 
     def get_user_data_by_id(self, id: int) -> Optional[User]:
         try:
-            data_in_db = self.users.aggregate(
-                [
-                    {'$match': {'telegram_id': id}},
-                    {
-                        '$lookup': {
-                            'from': 'bot_group',
-                            'let': {'ids': '$groups_id'},
-                            'pipeline': [
-                                {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
-                                {'$project': {'name': 1, '_id': 0}},
-                            ],
-                            'as': 'groups',
-                        }
-                    },
-                    {'$project': {"groups_id": 0}},
-                ]
+            data_in_db = list(
+                self.users.aggregate(
+                    [
+                        {'$match': {'telegram_id': id}},
+                        {
+                            '$lookup': {
+                                'from': 'bot_group',
+                                'let': {'ids': '$groups_id'},
+                                'pipeline': [
+                                    {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
+                                    {'$project': {'name': 1, '_id': 0}},
+                                ],
+                                'as': 'groups',
+                            }
+                        },
+                        {'$project': {"groups_id": 0}},
+                    ]
+                )
             )
             if data_in_db:
-                return User.from_json(list(data_in_db)[0])
+                return User.from_json(data_in_db[0])
             return None
         except Exception as err:
             logger.error(err)
@@ -104,173 +105,121 @@ class MongoUserRepository(UserRepository):
 
     def get_workout(self, group: str, order: int, date: datetime.datetime) -> Optional[Workout]:
         try:
-            data_in_db = self.workout.aggregate(
-                [
-                    {
-                        '$match': {
-                            'week_start_date': date,
-                            'order': order,
-                        }
-                    },
-                    {
-                        '$lookup': {
-                            'from': 'bot_group',
-                            'let': {'ids': '$groups_id'},
-                            'pipeline': [
-                                {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
-                                {'$match': {'name': group}},
-                                {'$project': {'_id': 0, 'id': 0}},
-                            ],
-                            'as': 'group',
-                        }
-                    },
-                    {'$addFields': {'group': {'$arrayElemAt': ['$group', 0]}}},
-                    {
-                        '$lookup': {
-                            'from': 'bot_set',
-                            'let': {'ids': '$sets_id'},
-                            'pipeline': [
-                                {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
-                                {
-                                    '$lookup': {
-                                        'from': 'bot_gymnastic',
-                                        'let': {'gids': '$gymnastics_id'},
-                                        'pipeline': [
-                                            {'$match': {'$expr': {'$in': ['$id', '$$gids']}}},
-                                            {'$project': {'id': 0, '_id': 0, 'date_created': 0}},
-                                            {
-                                                '$lookup': {
-                                                    'from': 'bot_exercise',
-                                                    'localField': 'exercise_id',
-                                                    'foreignField': 'id',
-                                                    'pipeline': [{'$project': {'id': 0, '_id': 0}}],
-                                                    'as': 'exercise',
-                                                }
-                                            },
-                                            {'$project': {'id': 0, '_id': 0, 'exercise_id': 0}},
-                                            {
-                                                '$addFields': {
-                                                    'exercise': {'$arrayElemAt': ['$exercise', 0]}
-                                                }
-                                            },
-                                        ],
-                                        'as': 'gymnastics',
-                                    }
-                                },
-                                {
-                                    '$project': {
-                                        'id': 0,
-                                        '_id': 0,
-                                        'date_created': 0,
-                                        'gymnastics_id': 0,
-                                    }
-                                },
-                            ],
-                            'as': 'sets',
-                        }
-                    },
-                    {'$project': {'_id': 0, 'groups_id': 0, 'sets_id': 0, 'id': 0}},
-                ]
+            data_in_db = list(
+                self.workout.aggregate(
+                    [
+                        {
+                            '$match': {
+                                'week_start_date': date,
+                                'order': order,
+                            }
+                        },
+                        {
+                            '$lookup': {
+                                'from': 'bot_group',
+                                'let': {'ids': '$groups_id'},
+                                'pipeline': [
+                                    {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
+                                    {'$match': {'name': group}},
+                                    {'$project': {'_id': 0, 'id': 0}},
+                                ],
+                                'as': 'group',
+                            }
+                        },
+                        {'$match': {'group': {'$exists': True, '$not': {'$size': 0}}}},
+                        {'$addFields': {'group': {'$arrayElemAt': ['$group', 0]}}},
+                        {
+                            '$lookup': {
+                                'from': 'bot_set',
+                                'let': {'ids': '$sets_id'},
+                                'pipeline': [
+                                    {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
+                                    {
+                                        '$lookup': {
+                                            'from': 'bot_gymnastic',
+                                            'let': {'gids': '$gymnastics_id'},
+                                            'pipeline': [
+                                                {'$match': {'$expr': {'$in': ['$id', '$$gids']}}},
+                                                {
+                                                    '$project': {
+                                                        'id': 0,
+                                                        '_id': 0,
+                                                        'date_created': 0,
+                                                    }
+                                                },
+                                                {
+                                                    '$lookup': {
+                                                        'from': 'bot_exercise',
+                                                        'localField': 'exercise_id',
+                                                        'foreignField': 'id',
+                                                        'pipeline': [
+                                                            {'$project': {'id': 0, '_id': 0}}
+                                                        ],
+                                                        'as': 'exercise',
+                                                    }
+                                                },
+                                                {'$project': {'id': 0, '_id': 0, 'exercise_id': 0}},
+                                                {
+                                                    '$addFields': {
+                                                        'exercise': {
+                                                            '$arrayElemAt': ['$exercise', 0]
+                                                        }
+                                                    }
+                                                },
+                                            ],
+                                            'as': 'gymnastics',
+                                        }
+                                    },
+                                    {
+                                        '$project': {
+                                            'id': 0,
+                                            '_id': 0,
+                                            'date_created': 0,
+                                            'gymnastics_id': 0,
+                                        }
+                                    },
+                                ],
+                                'as': 'sets',
+                            }
+                        },
+                        {'$project': {'_id': 0, 'groups_id': 0, 'sets_id': 0, 'id': 0}},
+                    ]
+                )
             )
             if data_in_db:
-                return Workout.parse_obj(list(data_in_db)[0])
+                return Workout.parse_obj(data_in_db[0])
             return None
         except Exception as err:
             logger.error(err)
 
-    # def get_workout_count(self, group: str, date: datetime.datetime) -> Optional[int]:
-    #     try:
-    #         data_in_db = self.workout.aggregate(
-    #             [
-    #                 {
-    #                     '$match': {
-    #                         'week_start_date': (date - datetime.timedelta(days=date.weekday())),
-    #                     }
-    #                 },
-    #                 {
-    #                     '$lookup': {
-    #                         'from': 'bot_group',
-    #                         'let': {'ids': '$groups_id'},
-    #                         'pipeline': [
-    #                             {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
-    #                             {'$match': {'name': group}},
-    #                             {'$project': {'_id': 0, 'id': 0}},
-    #                             {'$count': 'id'}
-    #                         ],
-    #                         'as': 'group',
-    #                     }
-    #                 },
-    #                 {'$addFields': {'group': {'$arrayElemAt': ['$group', 0]}}},
-    #                 {
-    #                     '$lookup': {
-    #                         'from': 'bot_set',
-    #                         'let': {'ids': '$sets_id'},
-    #                         'pipeline': [
-    #                             {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
-    #                             {
-    #                                 '$lookup': {
-    #                                     'from': 'bot_gymnastic',
-    #                                     'let': {'gids': '$gymnastics_id'},
-    #                                     'pipeline': [
-    #                                         {'$match': {'$expr': {'$in': ['$id', '$$gids']}}},
-    #                                         {'$project': {'id': 0, '_id': 0, 'date_created': 0}},
-    #                                         {
-    #                                             '$lookup': {
-    #                                                 'from': 'bot_exercise',
-    #                                                 'localField': 'exercise_id',
-    #                                                 'foreignField': 'id',
-    #                                                 'pipeline': [{'$project': {'id': 0, '_id': 0}}],
-    #                                                 'as': 'exercise',
-    #                                             }
-    #                                         },
-    #                                         {'$project': {'id': 0, '_id': 0, 'exercise_id': 0}},
-    #                                         {
-    #                                             '$addFields': {
-    #                                                 'exercise': {'$arrayElemAt': ['$exercise', 0]}
-    #                                             }
-    #                                         },
-    #                                     ],
-    #                                     'as': 'gymnastics',
-    #                                 }
-    #                             },
-    #                             {
-    #                                 '$project': {
-    #                                     'id': 0,
-    #                                     '_id': 0,
-    #                                     'date_created': 0,
-    #                                     'gymnastics_id': 0,
-    #                                 }
-    #                             },
-    #                         ],
-    #                         'as': 'sets',
-    #                     }
-    #                 },
-    #                 {'$project': {'_id': 0, 'groups_id': 0, 'sets_id': 0, 'id': 0}},
-    #                 {'$count': 'id'}
-    #             ]
-    #         )
-    #         if data_in_db:
-    #             count_dict = list(data_in_db)[0]
-    #             count = count_dict.get('id')
-    #             return count
-    #         return 0
-    #     except Exception as err:
-    #         logger.error(err)
-    #         return 0
-
     def get_workout_count(self, group: str, date: datetime.datetime) -> Optional[int]:
         try:
-            if data_in_db := self.workout.aggregate(
-                [
-                    {
-                        '$match': {
-                            'week_start_date': date,
-                        }
-                    },
-                    {'$count': 'id'},
-                ]
+            if data_in_db := list(
+                self.workout.aggregate(
+                    [
+                        {
+                            '$match': {
+                                'week_start_date': date,
+                            }
+                        },
+                        {
+                            '$lookup': {
+                                'from': 'bot_group',
+                                'let': {'ids': '$groups_id'},
+                                'pipeline': [
+                                    {'$match': {'$expr': {'$in': ['$id', '$$ids']}}},
+                                    {'$match': {'name': group}},
+                                    {'$project': {'_id': 0, 'id': 0}},
+                                ],
+                                'as': 'group',
+                            }
+                        },
+                        {'$match': {'group': {'$exists': True, '$not': {'$size': 0}}}},
+                        {'$count': 'id'},
+                    ]
+                )
             ):
-                count_dict = list(data_in_db)[0]
+                count_dict = data_in_db[0]
                 return count_dict.get('id')
             return 0
         except Exception as err:

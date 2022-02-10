@@ -32,7 +32,9 @@ class User(UserRaw):
             first_name=user_json['first_name'],
             last_name=user_json['last_name'],
             username=user_json['username'],
-            birth_date=user_json['birth_date'].strftime('%m/%d/%Y'),
+            birth_date=user_json['birth_date'].strftime('%m/%d/%Y')
+            if user_json['birth_date']
+            else None,
             activated=user_json['activated'],
             sex=user_json['sex'],
             groups=[item['name'] for item in user_json['groups']],

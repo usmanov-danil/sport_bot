@@ -4,7 +4,7 @@ from logger.settings import LoguruHandler, logging_level_within
 
 # Configuration
 compression = 'zip'
-log_format = '{level} {time} {name}: {message}'
+log_format = '{level} {time} {name} {function}:{line}  {message}'
 rotation = '1 week'
 
 HANDLERS: list[LoguruHandler] = [

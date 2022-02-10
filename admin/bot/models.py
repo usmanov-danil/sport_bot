@@ -26,6 +26,7 @@ class User(models.Model):
     telegram_id = models.PositiveIntegerField(editable=False)
     first_name = models.CharField(max_length=32, verbose_name='Имя')
     last_name = models.CharField(max_length=32, verbose_name='Фамилия')
+    username = models.CharField(max_length=32, verbose_name='Алиас')
     birth_date = models.DateField(blank=True, verbose_name='Дата рождения', null=True)
     activated = models.BooleanField(default=False, verbose_name='Активированный')
     sex = models.CharField(max_length=1, choices=_SEX, verbose_name='Пол', blank=True, null=True)
