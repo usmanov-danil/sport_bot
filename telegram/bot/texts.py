@@ -1,7 +1,7 @@
 # INFO MESSAGES
-WELCOME_MESSAGE = 'Привет\\!\nНапиши мне что\\-нибудь\\!'
-HELP_MESSAGE = 'тут будет всякая инфа'
-MAIN_PAGE_TEXT = 'Выбери пункт'
+WELCOME_MESSAGE = 'Добро пожаловать в спорт\\-бот\\!\nВаш профиль занесён в базу данных\\. Ожидайте, подтверждения от администратора'
+HELP_MESSAGE = 'Для связи с администратором, пишите \\@dobriy\\_trener\nПо техническим вопросам \\@Michealka или \\@usmanov\\_d'
+MAIN_PAGE_TEXT = 'Выберите пункт'
 
 # OK STATUS
 DATA_IS_SAVED = 'Данные успешно сохранены'
@@ -11,7 +11,7 @@ UNKNOW = '_Неизвестно_'
 ASK_TO_REGISTER = 'Ваши данные не найдены, просьба пройти регистарцию с помощью команды /start'
 INCORRECT_INPUT = 'Пожалуйста, введите корректный ответ'
 WAIT_ADMIN_APPROVE = 'Ожидайте активацию от тренера'
-WAIT_ADMIN_GROUP = 'Ожидайте, пока тренер добавит вас в группу'
+WAIT_ADMIN_GROUP = 'Ожидайте, пока администратор добавит вас в группу'
 
 # ADMIN
 STARTUP_NOTIFICATION = 'Бот запущен'
@@ -77,9 +77,9 @@ KBGU_TEXT = 'Ваша суточная норма каллорий:\nДля по
 WORKOUT_MAIN_TEXT = 'Выберите тренировку'
 WORKOUT_GROUPS = 'Выберите группу'
 WORKOUT_DONT_EXIST = 'Не существует тренировки'
-WORKOUT_WEEK_DONT_EXIST = 'Нет тренеровок на неделе'
-THIS_WEEK = 'эта неделя'
-LAST_WEEK = 'прошлая неделя'
+WORKOUT_WEEK_DONT_EXIST = 'Нет тренеровок на этой неделе'
+THIS_WEEK = 'Эта неделя'
+LAST_WEEK = 'Прошлая неделя'
 
 CHOOSE_DATE = 'Выберите дату: '
 ROUNDS_LIST = ['раунд', 'раунда', 'раундов']
