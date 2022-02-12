@@ -1,9 +1,7 @@
 # INFO MESSAGES
-WELCOME_MESSAGE = 'Привет\\!\nНапиши мне что\\-нибудь\\!'
-HELP_MESSAGE = 'тут будет всякая инфа'
-
-WORKOUT_MAIN_TEXT = 'Выбери тренировку'
-MAIN_PAGE_TEXT = 'Выбери пункт'
+WELCOME_MESSAGE = 'Добро пожаловать в спорт\\-бот\\!\nВаш профиль занесён в базу данных\\. Ожидайте, подтверждения от администратора'
+HELP_MESSAGE = 'Для связи с администратором, пишите \\@dobriy\\_trener\nПо техническим вопросам \\@Michealka или \\@usmanov\\_d'
+MAIN_PAGE_TEXT = 'Выберите пункт'
 
 # OK STATUS
 DATA_IS_SAVED = 'Данные успешно сохранены'
@@ -12,6 +10,8 @@ DATA_IS_SAVED = 'Данные успешно сохранены'
 UNKNOW = '_Неизвестно_'
 ASK_TO_REGISTER = 'Ваши данные не найдены, просьба пройти регистарцию с помощью команды /start'
 INCORRECT_INPUT = 'Пожалуйста, введите корректный ответ'
+WAIT_ADMIN_APPROVE = 'Ожидайте активацию от тренера'
+WAIT_ADMIN_GROUP = 'Ожидайте, пока администратор добавит вас в группу'
 
 # ADMIN
 STARTUP_NOTIFICATION = 'Бот запущен'
@@ -27,15 +27,26 @@ KEYBOARD = {
     'attendance': 'Student attendance',
     'back': 'Назад',
     # Workout
-    'first_workout': 'Первая тренировка',
-    'second_workout': 'Вторая тренировка',
-    'third_workout': 'Третья тренировка',
+    '1_workout': '1 тренировка',
+    '2_workout': '2 тренировка',
+    '3_workout': '3 тренировка',
+    '4_workout': '4 тренировка',
+    '5_workout': '5 тренировка',
+    '6_workout': '6 тренировка',
+    '7_workout': '7 тренировка',
+    '8_workout': '8 тренировка',
+    '9_workout': '9 тренировка',
+    '10_workout': '10 тренировка',
+    'date_workout': 'По дате',
     # Profile
     'get_profile_info': 'Личные данные',
     'change_profile': 'Изменить личные данные',
     'calculate_kbgu': 'Посчитать суточную норму калорий',
     'male': 'Мужской',
     'female': 'Женский',
+    # Navigation
+    'prev': '⬅️',
+    'next': '➡️',
 }
 
 # Profile
@@ -60,3 +71,15 @@ ACTIVITY = {
     '1,9 – очень высокая активность (обычно речь идет о спортсменах в период соревновательной активности)': 1.9,
 }
 KBGU_TEXT = 'Ваша суточная норма каллорий:\nДля поддержания: {normal}\nДля похудения: {deficit}\nДля набора: {surplus}'
+
+
+# WORKOUT
+WORKOUT_MAIN_TEXT = 'Выберите тренировку'
+WORKOUT_GROUPS = 'Выберите группу'
+WORKOUT_DONT_EXIST = 'Не существует тренировки'
+WORKOUT_WEEK_DONT_EXIST = 'Нет тренеровок на этой неделе'
+THIS_WEEK = 'Эта неделя'
+LAST_WEEK = 'Прошлая неделя'
+
+CHOOSE_DATE = 'Выберите дату: '
+ROUNDS_LIST = ['раунд', 'раунда', 'раундов']

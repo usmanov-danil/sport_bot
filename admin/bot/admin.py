@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.contrib import admin
 from django.contrib.admin import DateFieldListFilter, ModelAdmin
 from django.utils import timezone
@@ -42,7 +44,7 @@ class TrainingAdmin(admin.ModelAdmin):
 
     def render_change_form(self, request, context, *args, **kwargs):
         context['adminform'].form.fields['sets'].queryset = Set.objects.filter(
-            date_created=timezone.datetime.today()
+            date_created__gte=timezone.datetime.today() - timedelta(days=1)
         )
         return super(TrainingAdmin, self).render_change_form(request, context, args, kwargs)
 

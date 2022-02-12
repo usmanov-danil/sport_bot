@@ -1,16 +1,15 @@
 import typing
-from typing import Any, Optional, Tuple
+from typing import Optional, Tuple
 
 from aiogram.types.user import User as UserRaw
 from aiogram.types.user import base, fields
-from pydantic import BaseModel
 from pydantic.types import Json
 
 
 class User(UserRaw):
     activated: Optional[base.Boolean] = fields.Field(default=False)
     birth_date: Optional[base.String] = fields.Field(default=None)
-    sex: Optional[base.String] = fields.DateTimeField(default=None)
+    sex: Optional[base.String] = fields.Field(default=None)
     groups: Optional[typing.List[base.String]] = fields.ListField(base=base.String, default=None)
 
     @staticmethod
@@ -29,14 +28,16 @@ class User(UserRaw):
     @staticmethod
     def from_json(user_json: Json):
         return User(
-            id=user_json['id'],
+            id=user_json['telegram_id'],
             first_name=user_json['first_name'],
             last_name=user_json['last_name'],
             username=user_json['username'],
-            birth_date=user_json['birth_date'],
+            birth_date=user_json['birth_date'].strftime('%m/%d/%Y')
+            if user_json['birth_date']
+            else None,
             activated=user_json['activated'],
             sex=user_json['sex'],
-            groups=user_json['groups'],
+            groups=[item['name'] for item in user_json['groups']],
         )
 
     def set_personal_params(self, birth_data: str, activated: bool, sex: str, groups: list) -> None:

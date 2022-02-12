@@ -9,6 +9,7 @@
 *.db
 db
 .idea/
+**/config.json
 
 ### macOS ###
 # General

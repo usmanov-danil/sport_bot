@@ -1,3 +1,5 @@
+import datetime
+
 from aiogram.types.user import User as UserRaw
 from bot.texts import KBGU_TEXT, KEYBOARD
 from repositories.abstract import UserRepository

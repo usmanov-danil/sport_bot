@@ -10,3 +10,8 @@ class ProfileRegistration(StatesGroup):
 class ProfileKBGU(StatesGroup):
     waiting_for_sex = State()
     waiting_for_activity = State()
+
+
+class Workout(StatesGroup):
+    waiting_for_group = State()
+    waiting_for_workout = State()

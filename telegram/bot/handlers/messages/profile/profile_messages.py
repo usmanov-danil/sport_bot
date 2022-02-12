@@ -5,7 +5,12 @@ from aiogram import types
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.storage import FSMContext
 from bot.handlers.fsm import ProfileKBGU, ProfileRegistration
-from bot.handlers.keyboard import activity_keyboard, profile, remove_keyboard, sex_keyboard
+from bot.handlers.keyboards.keyboard import (
+    activity_keyboard,
+    profile,
+    remove_keyboard,
+    sex_keyboard,
+)
 from bot.handlers.messages.utils import is_valid_height, is_valid_weight, is_valid_years
 from bot.loader import config_manager, dp
 from bot.texts import (
@@ -29,7 +34,7 @@ from services.user_managment import (
 
 # Profile page
 @dp.message_handler(Text(equals=KEYBOARD['profile']))
-async def process_start_command(message: types.Message):
+async def process_profile(message: types.Message):
     await message.reply(PROFILE_MAIN_TEXT, reply_markup=profile)
 
 

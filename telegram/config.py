@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from typing import Optional
 
+from aiogram.contrib.fsm_storage.mongo import MongoStorage
 from pydantic import BaseModel
 from pydantic.types import PyObject
 from pymongo.mongo_client import MongoClient
@@ -20,7 +21,7 @@ class RepositoryConfig(BaseModel):
 
 class Config(BaseModel):
     token: str
-    admins: list[str]
+    admins: list[int]
     repo: RepositoryConfig
 
 
@@ -39,3 +40,9 @@ class ConfigurationManager:
             password=self._config.repo.password,
         )
         self.repository = self._config.repo.repo(_connection)
+        self.mongo_storage = MongoStorage(
+            host=self._config.repo.connection,
+            port=self._config.repo.port,
+            username=self._config.repo.username,
+            password=self._config.repo.password,
+        )

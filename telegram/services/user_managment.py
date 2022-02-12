@@ -1,15 +1,18 @@
+import datetime
 from re import escape
+from typing import Optional
 
 from aiogram.types.user import User as UserRaw
+from bot.handlers.messages.utils import get_start_week
 from bot.texts import ASK_TO_REGISTER, DATA_IS_SAVED, UNKNOW, USER_DATA_TEMPLATE
 from loguru import logger
 from models.base import User
+from models.workout import Workout
 from repositories.abstract import UserRepository
 
 
 async def register_new_user(repo: UserRepository, user: User) -> None:
     repo.save_user_data(user)
-    logger.info(f'User {user.username} has registered')
 
 
 async def get_all_user_ids(repo: UserRepository) -> list[int]:
@@ -44,3 +47,17 @@ async def get_user_data(repo: UserRepository, user: User) -> str:
             )
         )
     return ASK_TO_REGISTER
+
+
+async def get_user_groups(repo: UserRepository, user: UserRaw) -> Optional[list[str]]:
+    return repo.get_user_data_by_id(user.id).groups
+
+
+async def get_workout(
+    repo: UserRepository, group: str, order: int, date: datetime.datetime = None
+) -> Optional[Workout]:
+    return repo.get_workout(group, order, get_start_week(date))
+
+
+async def get_workout_count(repo: UserRepository, group: str, date: datetime.datetime) -> int:
+    return repo.get_workout_count(group, get_start_week(date))

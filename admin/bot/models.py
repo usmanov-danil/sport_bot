@@ -23,10 +23,11 @@ class Group(models.Model):
 class User(models.Model):
     _SEX = (('M', 'Мужской'), ('F', 'Женский'))
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    telegram_id = models.CharField(max_length=32)
+    telegram_id = models.PositiveIntegerField(editable=False)
     first_name = models.CharField(max_length=32, verbose_name='Имя')
     last_name = models.CharField(max_length=32, verbose_name='Фамилия')
-    birth_date = models.DateField(blank=True, verbose_name='Дата рождения')
+    username = models.CharField(max_length=32, verbose_name='Алиас')
+    birth_date = models.DateField(blank=True, verbose_name='Дата рождения', null=True)
     activated = models.BooleanField(default=False, verbose_name='Активированный')
     sex = models.CharField(max_length=1, choices=_SEX, verbose_name='Пол', blank=True, null=True)
     groups = models.ArrayReferenceField(
@@ -35,7 +36,7 @@ class User(models.Model):
 
     def group_names(self) -> str:
         names = list(User.objects.filter(id=self.id).values_list('groups__name', flat=True))
-        return ", ".join(names)
+        return ', '.join(names) if names and names[0] else ''
 
     def __str__(self):
         # return f'{str(self.first_name)} {str(self.last_name)}. Группы: {self.group_names()}'
@@ -64,10 +65,10 @@ class Gymnastic(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, verbose_name='Упражнение')
     description = models.TextField(blank=True, verbose_name='Описание')
-    value = models.CharField(max_length=50, blank=False, verbose_name='Повторения')
+    value = models.CharField(max_length=50, blank=True, verbose_name='Повторения')
 
     def __str__(self):
-        return f'{self.exercise.name}: {self.value} повторов'
+        return f'{self.exercise.name}: {self.value}'
 
     class Meta:
         verbose_name = 'Задание'
@@ -78,7 +79,7 @@ class Set(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     description = models.TextField(blank=True, verbose_name='Описание')
     rounds_amount = models.PositiveIntegerField(default=3, verbose_name='Кол-во раундов')
-    date_created = models.DateField(auto_now_add=True, editable=True, verbose_name='Дата создания')
+    date_created = models.DateField(auto_now_add=True, editable=False, verbose_name='Дата создания')
     gymnastics = models.ArrayReferenceField(
         to=Gymnastic, on_delete=models.CASCADE, verbose_name='Задания'
     )
@@ -113,7 +114,7 @@ class Training(models.Model):
 
     def group_names(self) -> str:
         names = list(Training.objects.filter(id=self.id).values_list('groups__name', flat=True))
-        return ", ".join(names)
+        return ', '.join(names) if names and names[0] else ''
 
     def __str__(self):
         # return f'Неделя {self.week_start_date}. Тренировка № {self.order}. Группы: {self.group_names()}'

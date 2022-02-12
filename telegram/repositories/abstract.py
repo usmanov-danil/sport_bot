@@ -1,7 +1,9 @@
+import datetime
 from abc import ABC, abstractmethod
 from typing import Optional
 
 from models.base import User
+from models.workout import Workout
 
 
 class UserRepository(ABC):
@@ -23,4 +25,12 @@ class UserRepository(ABC):
 
     @abstractmethod
     def get_personal_info(self, id: int) -> Optional[User]:
+        raise NotImplemented
+
+    @abstractmethod
+    def get_workout(self, group: str, order: int, date: datetime.datetime) -> Optional[Workout]:
+        raise NotImplemented
+
+    @abstractmethod
+    def get_workout_count(self, group: str, date: datetime.datetime) -> int:
         raise NotImplemented
