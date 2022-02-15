@@ -1,13 +1,17 @@
 # INFO MESSAGES
 WELCOME_MESSAGE = 'Добро пожаловать в спорт\\-бот\\!\nВаш профиль занесён в базу данных\\. Ожидайте, подтверждения от администратора'
-HELP_MESSAGE = 'Для связи с администратором, пишите \\@dobriy\\_trener\nПо техническим вопросам \\@Michealka или \\@usmanov\\_d'
+WELCOME_MESSAGE_REGISTERED_USER = 'Вы уже зарегестрированы, можете выбрать тренировки'
+HELP_MESSAGE = (
+    'Для связи с администратором, пишите \\@dobriy\\_trener\nПо техническим вопросам \\@Michealka или '
+    '\\@usmanov\\_d '
+)
 MAIN_PAGE_TEXT = 'Выберите пункт'
 
 # OK STATUS
 DATA_IS_SAVED = 'Данные успешно сохранены'
 
 # ERRORS
-UNKNOW = '_Неизвестно_'
+UNKNOWN = '_Неизвестно_'
 ASK_TO_REGISTER = 'Ваши данные не найдены, просьба пройти регистарцию с помощью команды /start'
 INCORRECT_INPUT = 'Пожалуйста, введите корректный ответ'
 WAIT_ADMIN_APPROVE = 'Ожидайте активацию от тренера'
@@ -15,8 +19,8 @@ WAIT_ADMIN_GROUP = 'Ожидайте, пока администратор доб
 
 # ADMIN
 STARTUP_NOTIFICATION = 'Бот запущен'
+USER_REGS_NOTIFICATION = 'начал\(a\) пользоваться ботом, ожидает назначения группы и активации'
 SHUTDOWN_NOTIFICATION = 'Бот остановлен'
-
 
 # KEYBOARD
 KEYBOARD = {
@@ -72,14 +76,14 @@ ACTIVITY = {
 }
 KBGU_TEXT = 'Ваша суточная норма каллорий:\nДля поддержания: {normal}\nДля похудения: {deficit}\nДля набора: {surplus}'
 
-
 # WORKOUT
 WORKOUT_MAIN_TEXT = 'Выберите тренировку'
 WORKOUT_GROUPS = 'Выберите группу'
 WORKOUT_DONT_EXIST = 'Не существует тренировки'
-WORKOUT_WEEK_DONT_EXIST = 'Нет тренеровок на этой неделе'
+WORKOUT_WEEK_DONT_EXIST = 'Нет тренеровок на неделе'
 THIS_WEEK = 'Эта неделя'
 LAST_WEEK = 'Прошлая неделя'
+NEXT_WEEK = 'Следующая неделя'
 
 CHOOSE_DATE = 'Выберите дату: '
 ROUNDS_LIST = ['раунд', 'раунда', 'раундов']

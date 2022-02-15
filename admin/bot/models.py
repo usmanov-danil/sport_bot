@@ -78,7 +78,7 @@ class Gymnastic(models.Model):
 class Set(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     description = models.TextField(blank=True, verbose_name='Описание')
-    rounds_amount = models.PositiveIntegerField(default=3, verbose_name='Кол-во раундов')
+    rounds_amount = models.PositiveIntegerField(verbose_name='Кол-во раундов', blank=True)
     date_created = models.DateField(auto_now_add=True, editable=False, verbose_name='Дата создания')
     gymnastics = models.ArrayReferenceField(
         to=Gymnastic, on_delete=models.CASCADE, verbose_name='Задания'
@@ -109,8 +109,12 @@ class Training(models.Model):
     sets = models.ArrayReferenceField(Set, on_delete=models.CASCADE, verbose_name='Сеты')
     order = models.PositiveIntegerField(verbose_name='Порядок', default=1)
     week_start_date = models.DateField(verbose_name='Дата начала недели')
-    min_rm_percent = models.PositiveIntegerField(verbose_name='Мин. процент от макс. веса')
-    max_rm_percent = models.PositiveIntegerField(verbose_name='Макс. процент от макс. веса')
+    min_rm_percent = models.PositiveIntegerField(
+        verbose_name='Мин. процент от макс. веса', blank=True
+    )
+    max_rm_percent = models.PositiveIntegerField(
+        verbose_name='Макс. процент от макс. веса', blank=True
+    )
 
     def group_names(self) -> str:
         names = list(Training.objects.filter(id=self.id).values_list('groups__name', flat=True))

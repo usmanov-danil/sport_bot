@@ -2,15 +2,42 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from bot.handlers.keyboards.keyboard import menu
+from bot.handlers.notify import notify_trainers
 from bot.loader import bot, config_manager, dp
-from bot.texts import HELP_MESSAGE, MAIN_PAGE_TEXT, WELCOME_MESSAGE
-from services.user_managment import get_all_user_ids, register_new_user
+from bot.texts import (
+    HELP_MESSAGE,
+    MAIN_PAGE_TEXT,
+    USER_REGS_NOTIFICATION,
+    WELCOME_MESSAGE,
+    WELCOME_MESSAGE_REGISTERED_USER,
+)
+from services.user_managment import (
+    get_all_user_ids,
+    is_user_activated,
+    is_user_exists,
+    register_new_user,
+)
 
 
 @dp.message_handler(Command('start'))
 async def process_start_command(message: types.Message, state: FSMContext):
-    await register_new_user(config_manager.repository, message.from_user)
-    await message.reply(WELCOME_MESSAGE, reply_markup=menu)
+    if is_user_exists(config_manager.repository, message.from_user):
+        if not is_user_activated(config_manager.repository, message.from_user):
+            await notify_trainers(
+                dp,
+                f"{message.from_user.first_name} {message.from_user.last_name} "
+                f"\@{message.from_user.username} {USER_REGS_NOTIFICATION}",
+            )
+            await message.reply(WELCOME_MESSAGE, reply_markup=menu)
+        else:
+            await message.reply(WELCOME_MESSAGE_REGISTERED_USER, reply_markup=menu)
+    else:
+        await register_new_user(config_manager.repository, message.from_user)
+        await message.reply(WELCOME_MESSAGE, reply_markup=menu)
+        await notify_trainers(
+            dp,
+            f"{message.from_user.first_name} {message.from_user.last_name} \@{message.from_user.username} {USER_REGS_NOTIFICATION}",
+        )
     # await state.finish()
 
 

@@ -22,6 +22,7 @@ class RepositoryConfig(BaseModel):
 class Config(BaseModel):
     token: str
     admins: list[int]
+    trainers: Optional[list[int]]
     repo: RepositoryConfig
 
 
@@ -31,6 +32,7 @@ class ConfigurationManager:
         self._config = Config.parse_raw(config_json)
         self.environment = os.getenv('ENV', 'dev')
         self.admins = self._config.admins
+        self.trainers = self._config.trainers
         self.token = self._config.token
 
         _connection = MongoClient(

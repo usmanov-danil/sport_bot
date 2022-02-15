@@ -1,18 +1,18 @@
 from datetime import datetime, timedelta, timezone
 
-from bot.texts import KEYBOARD, LAST_WEEK, THIS_WEEK
+from bot.texts import LAST_WEEK, NEXT_WEEK, THIS_WEEK
 
 
 def is_valid_weight(weight: str):
-    return weight.replace('.', '').isnumeric() and float(weight) > 0 and float(weight) < 200
+    return weight.replace('.', '').isnumeric() and 0 < float(weight) < 200
 
 
 def is_valid_height(height: str):
-    return height.isnumeric() and int(height) > 0 and int(height) < 300
+    return height.isnumeric() and 0 < int(height) < 300
 
 
 def is_valid_years(years: str):
-    return years.isnumeric() and int(years) > 0 and int(years) < 100
+    return years.isnumeric() and 0 < int(years) < 100
 
 
 def get_workout_order(message: str) -> int:
@@ -26,8 +26,10 @@ def get_week_from_date(date: datetime) -> str:
     week_dates = start_week.strftime("%d/%m") + " \- " + end_week.strftime("%d/%m")
     if start_week <= today <= end_week:
         week_dates += f"\({THIS_WEEK}\)"
-    if start_week <= today - timedelta(days=7) <= end_week:
+    elif start_week <= today - timedelta(days=7) <= end_week:
         week_dates += f"\({LAST_WEEK}\)"
+    elif start_week <= today + timedelta(days=7) <= end_week:
+        week_dates += f"\({NEXT_WEEK}\)"
     return week_dates
 
 

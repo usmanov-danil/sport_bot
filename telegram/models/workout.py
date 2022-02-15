@@ -15,11 +15,14 @@ def to_esc(line: str) -> str:
                 "-": r"\-",
                 "]": r"\]",
                 "\\": r"\\",
+                "(": r"\(",
+                ")": r"\)",
                 "^": r"\^",
                 "$": r"\$",
                 "+": r"\+",
                 "*": r"\*",
                 ".": r"\.",
+                "_": r"\_",
             }
         )
     )
@@ -58,12 +61,12 @@ class Gymnastic(BaseModel):
 
 class Set(BaseModel):
     description: Optional[str] = fields.Field(default=None)
-    rounds_amount: int
+    rounds_amount: Optional[int]
     gymnastics: list[Gymnastic]
 
     def render_message(self, number) -> str:
         msg = (
-            f'*Set {number}*: *{self.rounds_amount}* {get_decl(self.rounds_amount, ROUNDS_LIST)} '
+            f'*Set {number}*: *{self.rounds_amount if self.rounds_amount else ""}* {get_decl(self.rounds_amount, ROUNDS_LIST) if self.rounds_amount else ""} '
             f'{to_esc(self.description)}\n'
         )
         for gym in self.gymnastics:
@@ -76,20 +79,21 @@ class Workout(BaseModel):
     description: Optional[str] = fields.Field(default=None)
     order: int
     week_start_date: date
-    min_rm_percent: int
-    max_rm_percent: int
+    min_rm_percent: Optional[int]
+    max_rm_percent: Optional[int]
     group: Group
     sets: list[Set]
 
     def render_message(self) -> str:  # TODO: generalize text
         msg = (
             f'Тренировка № {self.order} '
-            f'{get_week_from_date(datetime.combine(self.week_start_date.today(), datetime.min.time()))}\n'
+            f'{get_week_from_date(datetime.combine(self.week_start_date, datetime.min.time()))}\n'
         )
         msg += f'Группа: *{to_esc(self.group.name)}*\n'
         if self.description:
             msg += f'Описание: {to_esc(self.description)}\n'
-        msg += f'Рабочий процент веса: *{self.min_rm_percent}–{self.max_rm_percent}%*\n\n'
+        if self.max_rm_percent and self.min_rm_percent:
+            msg += f'Рабочий процент веса: *{self.min_rm_percent}–{self.max_rm_percent}%*\n\n'
 
         for i, set in enumerate(self.sets):
             msg += f'{set.render_message(i + 1)}\n'
