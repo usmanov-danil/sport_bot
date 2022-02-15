@@ -92,7 +92,7 @@ class Workout(BaseModel):
         msg += f'Группа: *{to_esc(self.group.name)}*\n'
         if self.description:
             msg += f'Описание: {to_esc(self.description)}\n'
-        if self.max_rm_percent:
+        if self.max_rm_percent and self.min_rm_percent:
             msg += f'Рабочий процент веса: *{self.min_rm_percent}–{self.max_rm_percent}%*\n\n'
 
         for i, set in enumerate(self.sets):
